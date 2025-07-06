@@ -20,30 +20,39 @@ const colorMap = ({ colorsMap, tableType }) => {
           className="risk-level-square"
           style={{ backgroundColor: colorsMap.High }}
         ></div>
-        <div className="map-item__title">{itemTitleObj.High}</div>
-        {tableType === "trafficLightProgram" && (
-          <div className="map-item__subtitle">{itemSubtitleObj.High}</div>
-        )}
+
+        <div className="map-item__text">
+          <div className="map-item__title semibold">{itemTitleObj.High}</div>
+          {tableType === "trafficLightProgram" && (
+            <div className="map-item__subtitle">{itemSubtitleObj.High}</div>
+          )}
+        </div>
       </div>
       <div className="map-item">
         <div
           className="risk-level-square"
           style={{ backgroundColor: colorsMap.Medium }}
         ></div>
-        <div className="map-item__title">{itemTitleObj.Medium}</div>
-        {tableType === "trafficLightProgram" && (
-          <div className="map-item__subtitle">{itemSubtitleObj.Medium}</div>
-        )}
+
+        <div className="map-item__text">
+          <div className="map-item__title semibold">{itemTitleObj.Medium}</div>
+          {tableType === "trafficLightProgram" && (
+            <div className="map-item__subtitle">{itemSubtitleObj.Medium}</div>
+          )}
+        </div>
       </div>
       <div className="map-item">
         <div
           className="risk-level-square"
           style={{ backgroundColor: colorsMap.Low }}
         ></div>
-        <div className="map-item__title">{itemTitleObj.Low}</div>
-        {tableType === "trafficLightProgram" && (
-          <div className="map-item__subtitle">{itemSubtitleObj.Low}</div>
-        )}
+
+        <div className="map-item__text">
+          <div className="map-item__title semibold">{itemTitleObj.Low}</div>
+          {tableType === "trafficLightProgram" && (
+            <div className="map-item__subtitle">{itemSubtitleObj.Low}</div>
+          )}
+        </div>
       </div>
       {tableType === "trafficLightProgram" && (
         <div className="map-item">
@@ -51,9 +60,11 @@ const colorMap = ({ colorsMap, tableType }) => {
             className="risk-level-square"
             style={{ backgroundColor: colorsMap.None }}
           ></div>
-          <div className="map-item__title">{itemTitleObj.None}</div>
 
-          <div className="map-item__subtitle">{itemSubtitleObj.None}</div>
+          <div className="map-item__text">
+            <div className="map-item__title semibold">{itemTitleObj.None}</div>
+            <div className="map-item__subtitle">{itemSubtitleObj.None}</div>
+          </div>
         </div>
       )}
     </div>

@@ -99,7 +99,7 @@ const TableComponent = ({ table }: { table: Table }) => {
         return (
           <td className="risk-level-square-container">
             <div
-              className={`level-square-background ${getDailyScoreColor(
+              className={`bold level-square-background ${getDailyScoreColor(
                 row,
                 columnName
               )}`}
@@ -195,7 +195,7 @@ const TableComponent = ({ table }: { table: Table }) => {
   }
 
   return (
-    <div className="responsive-container card table-container">
+    <div className="card table-container">
       <div className="card__header">
         <div className="card__title bold line-height-2xl">{table.title}</div>
 
