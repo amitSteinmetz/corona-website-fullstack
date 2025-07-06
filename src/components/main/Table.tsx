@@ -110,7 +110,7 @@ const TableComponent = ({ table }: { table: Table }) => {
         );
       } else if (
         typeof row[columnName] === "number" &&
-        table.columns.find((col) => col.key === columnName).inPercentages
+        table.columns.find((col) => col.key === columnName)?.inPercentages
       ) {
         return (
           <td className="bold">

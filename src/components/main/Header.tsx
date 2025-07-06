@@ -5,12 +5,10 @@ import {
   changeThemeColorBtn,
   hamburgerBtn,
 } from "../../assets/svgs";
-import { HEADER_NAV_LINKS } from "../../constants/main/HeaderConstants";
 import { ThemeContext } from "../../contexts/ThemeContext";
 
 const Header = () => {
   const { theme, toggleTheme } = useContext(ThemeContext);
-  const [activeLinkIndex, setActiveLinkIndex] = useState(0);
   const [isGradientLineLoadingAnimate, setIsGradientLineLoadingAnimate] =
     useState(false);
 
@@ -50,26 +48,6 @@ const Header = () => {
             <img src={changeThemeColorBtn} alt="כפתור שינוי רקע" />
           </button>
         </div>
-      </div>
-
-      <div className="header__nav-wrapper">
-        <nav className="nav-links">
-          {HEADER_NAV_LINKS.map((link, index) => {
-            return (
-              <div
-                className={`header__nav-link ${
-                  activeLinkIndex === index ? "active" : ""
-                }`}
-                key={index}
-                onClick={() => {
-                  setActiveLinkIndex(index);
-                }}
-              >
-                {link}
-              </div>
-            );
-          })}
-        </nav>
       </div>
     </div>
   );

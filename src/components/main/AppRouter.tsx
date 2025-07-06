@@ -1,14 +1,13 @@
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Header from "./Header";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { ThemeContext } from "../../contexts/ThemeContext";
-import Section from "./Section";
-import { DataContext } from "../../contexts/DataContext";
-import { sideNavArrowBtn } from "../../assets/svgs";
+import Home from "../Home";
+import AdminLogin from "../admin/AdminLogin";
+import AdminControlCenter from "../admin/AdminControlCenter";
 
 function AppRouter() {
   const { theme } = useContext(ThemeContext);
-  const { sections } = useContext(DataContext);
 
   return (
     <BrowserRouter>
@@ -19,34 +18,16 @@ function AppRouter() {
       >
         <Header></Header>
 
-        <div className="inner-page__container">
-          <div className="side-nav">
-            <img
-              src={sideNavArrowBtn}
-              alt="hamburger"
-              className="side-nav__btn"
-            />
-          </div>
-
-          <div className="page-body">
-            <div className="page-location">עולם הדאטא &gt; קורונה </div>
-
-            <div className="page-headline">
-              <h1 className="page-headline__title font-2xl bold">קורונה</h1>
-              <div className="last-update">
-                <span className="bold">עדכון אחרון:</span> 11/05/25, 04:10
-              </div>
-            </div>
-
-            {sections ? (
-              sections.map((sectionData, index) => (
-                <Section key={index} sectionData={sectionData} />
-              ))
-            ) : (
-              <div>Loading...</div>
-            )}
-          </div>
-        </div>
+        <Routes>
+          <Route path="/" element={<Navigate to="/home" />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/admin" element={<AdminLogin />} />{" "}
+          <Route
+            path="/admin/control-center"
+            element={<AdminControlCenter />}
+          />
+          {/* <Route path="*" element={<Navigate to="/page-not-found" />} /> */}
+        </Routes>
       </div>
     </BrowserRouter>
   );

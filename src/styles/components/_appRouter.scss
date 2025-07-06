@@ -3,67 +3,6 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-
-  .inner-page__container {
-    display: flex;
-    flex: 1;
-
-    .side-nav {
-      box-shadow: -9px 0 20px #465a7a1c;
-      width: 48px;
-      position: relative;
-      z-index: 10;
-      display: none;
-
-      .side-nav__btn {
-        position: absolute;
-        top: 0;
-        right: 22px;
-      }
-    }
-
-    .page-body {
-      background-color: rgb(248, 250, 253);
-      flex: 1;
-      padding: 0 73px 0 25px;
-      color: $textBasicColor;
-      
-      .page-location {
-        padding-top: 10px;
-      }
-
-      .page-headline {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-        .last-update {
-          display: none;
-        }
-
-        .page-headline__title {
-          margin: revert;
-        }
-      }
-    }
-  }
 }
 
-@media (min-width: 500px) {
-  .all-page__container {
-    .inner-page__container {
-      .side-nav {
-        display: block;
-      }
 
-      .page-body {
-        padding-right: 30px;
-        padding-left: 37px;
-
-        .page-headline .last-update {
-          display: block;
-        }
-      }
-    }
-  }
-}
