@@ -55,7 +55,7 @@ const AdminControlCenter = () => {
                     return (
                       <div
                         className={`semibold admin-control-center__selection-box__options__item ${
-                          chosenSection ? "active" : ""
+                          chosenSection?.title === section.title ? "active" : ""
                         }`}
                         onClick={() => setChosenSection(section)}
                       >
@@ -83,7 +83,7 @@ const AdminControlCenter = () => {
                 return (
                   <div
                     className={`semibold admin-control-center__selection-box__options__item ${
-                      chosenSectionItem ? "active" : ""
+                      chosenSectionItem?.item?.id === card.id ? "active" : ""
                     }`}
                     onClick={() =>
                       setchosenSectionItem({ item: card, type: "card" })
@@ -98,7 +98,7 @@ const AdminControlCenter = () => {
                 return (
                   <div
                     className={`semibold admin-control-center__selection-box__options__item ${
-                      chosenSectionItem ? "active" : ""
+                      chosenSectionItem?.item?.id === table.id ? "active" : ""
                     }`}
                     onClick={() =>
                       setchosenSectionItem({ item: table, type: "table" })
