@@ -71,5 +71,55 @@ namespace corona_server_side_asp.net.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+        [HttpDelete("delete-row/{sectionId}/{tableId}/{rowId}")]
+        public async Task<IActionResult> DeleteRowFromTable(int sectionId, int tableId, int rowId)
+        {
+            try
+            {
+                await _tablesRepository.DeleteRowFromTable(sectionId, tableId, rowId);
+                return Ok(new
+                {
+                    SectionId = sectionId,
+                    TableId = tableId,
+                    RowId = rowId
+                });
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine($"Error retrieving table: {ex.Message}");
+
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpPost("add-row/{sectionId}/{tableId}")]
+        public async Task<IActionResult> AddRowToTable(int sectionId, int tableId, [FromBody] object row)
+        {
+            if (row == null) return BadRequest("Row data is required.");
+
+            try
+            {
+                await _tablesRepository.AddRowToTable(sectionId, tableId, row);
+                return Ok(new
+                {
+                    SectionId = sectionId,
+                    TableId = tableId,
+                    Row = row
+                });
+            }
+            catch (ArgumentException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
     }
 }
