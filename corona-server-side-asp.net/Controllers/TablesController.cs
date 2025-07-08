@@ -98,10 +98,56 @@ namespace corona_server_side_asp.net.Controllers
         }
 
         [HttpPost("add-row/{sectionId}/{tableId}")]
-        public async Task<IActionResult> AddRowToTable(int sectionId, int tableId, [FromBody] object row)
+        public async Task<IActionResult> AddTrafficRowToTable(int sectionId, int tableId, [FromBody] TrafficLightProgramItem row)
         {
             if (row == null) return BadRequest("Row data is required.");
 
+            try
+            {
+                await _tablesRepository.AddRowToTable(sectionId, tableId, row);
+                return Ok(new
+                {
+                    SectionId = sectionId,
+                    TableId = tableId,
+                    Row = row
+                });
+            }
+            catch (ArgumentException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        public async Task<IActionResult> AddIncomingRowToTable(int sectionId, int tableId, [FromBody] IncomingPersonsItem row)
+        {
+            if (row == null) return BadRequest("Row data is required.");
+            try
+            {
+                await _tablesRepository.AddRowToTable(sectionId, tableId, row);
+                return Ok(new
+                {
+                    SectionId = sectionId,
+                    TableId = tableId,
+                    Row = row
+                });
+            }
+            catch (ArgumentException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        public async Task<IActionResult> AddHospitalRowToTable(int sectionId, int tableId, [FromBody] HospitalBedOccupancyItem row)
+        {
+            if (row == null) return BadRequest("Row data is required.");
             try
             {
                 await _tablesRepository.AddRowToTable(sectionId, tableId, row);

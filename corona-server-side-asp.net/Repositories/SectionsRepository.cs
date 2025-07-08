@@ -28,12 +28,13 @@ namespace corona_server_side_asp.net.Repositories
             await PreloadSubTypes();
 
             var sections = await _context.Sections
-                .Include(s => s.Cards).Include(s => s.RelatedLinks)
-                .Include(s => s.Tables).ThenInclude(t => t.Columns)
-                .ToListAsync();
-
+            .Include(s => s.Cards)
+            .Include(s => s.RelatedLinks)
+            .Include(s => s.Tables)
+                .ThenInclude(t => t.Columns)
+            .ToListAsync();
+               
             _cardsRepository.WriteExcelDataToCards(ref sections);
-
             return sections;
         }
 

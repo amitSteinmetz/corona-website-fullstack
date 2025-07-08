@@ -158,6 +158,58 @@
   },
   {
     "ContainingType": "corona_server_side_asp.net.Controllers.TablesController",
+    "Method": "AddIncomingRowToTable",
+    "RelativePath": "api/Tables",
+    "HttpMethod": "",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "sectionId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "tableId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "row",
+        "Type": "corona_server_side_asp.net.Models.Tables.IncomingPersonsItem",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "corona_server_side_asp.net.Controllers.TablesController",
+    "Method": "AddHospitalRowToTable",
+    "RelativePath": "api/Tables",
+    "HttpMethod": "",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "sectionId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "tableId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "row",
+        "Type": "corona_server_side_asp.net.Models.Tables.HospitalBedOccupancyItem",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "corona_server_side_asp.net.Controllers.TablesController",
     "Method": "AddTableToSection",
     "RelativePath": "api/Tables/{sectionId}",
     "HttpMethod": "POST",
@@ -221,7 +273,7 @@
   },
   {
     "ContainingType": "corona_server_side_asp.net.Controllers.TablesController",
-    "Method": "AddRowToTable",
+    "Method": "AddTrafficRowToTable",
     "RelativePath": "api/Tables/add-row/{sectionId}/{tableId}",
     "HttpMethod": "POST",
     "IsController": true,
@@ -239,7 +291,7 @@
       },
       {
         "Name": "row",
-        "Type": "System.Object",
+        "Type": "corona_server_side_asp.net.Models.Tables.TrafficLightProgramItem",
         "IsRequired": true
       }
     ],

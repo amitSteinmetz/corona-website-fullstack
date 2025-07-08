@@ -5,7 +5,7 @@
         public List<HospitalBedOccupancyItem> Rows { get; set; } = new();
     }
 
-    public class  IncomingPersonsTable : TableModel 
+    public class IncomingPersonsTable : TableModel
     {
         public List<IncomingPersonsItem> Rows { get; set; } = new();
     }

@@ -498,16 +498,24 @@
         "requestBody": {
           "content": {
             "application/json-patch+json": {
-              "schema": { }
+              "schema": {
+                "$ref": "#/components/schemas/TrafficLightProgramItem"
+              }
             },
             "application/json": {
-              "schema": { }
+              "schema": {
+                "$ref": "#/components/schemas/TrafficLightProgramItem"
+              }
             },
             "text/json": {
-              "schema": { }
+              "schema": {
+                "$ref": "#/components/schemas/TrafficLightProgramItem"
+              }
             },
             "application/*+json": {
-              "schema": { }
+              "schema": {
+                "$ref": "#/components/schemas/TrafficLightProgramItem"
+              }
             }
           }
         },
@@ -654,6 +662,40 @@
               "$ref": "#/components/schemas/TableColumn"
             },
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TrafficLightProgramItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "city": {
+            "type": "string",
+            "nullable": true
+          },
+          "dailyScore": {
+            "type": "number",
+            "format": "double"
+          },
+          "newPatientsPer10000People": {
+            "type": "string",
+            "nullable": true
+          },
+          "positiveTestsPercentage": {
+            "type": "number",
+            "format": "double"
+          },
+          "verifiedChangeRate": {
+            "type": "number",
+            "format": "double"
+          },
+          "activePatients": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
