@@ -1,19 +1,22 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useReducer } from "react";
 import { SectionModel } from "../models/section.model";
 import { Card } from "../models/card.model";
+import { AdminReducer } from "../reducers/AdminReducer";
+import { setSectionsAction } from "../actions/AdminActions";
 
 export const DataContext = createContext(null);
 
 const DataProvider = ({ children }) => {
-  const [sections, setSections] = useState<SectionModel[]>();
+  // const [sections, setSections] = useState<SectionModel[]>();
+  const [sections, sectionsDispatch] = useReducer(AdminReducer, []);
 
   // First website initialization
   useEffect(() => {
     fetch("https://localhost:7287/api/Sections")
       .then((res) => res.json())
       .then((data: SectionModel[]) => {
-        setSections(data);
         console.log(data);
+        setSectionsAction(sectionsDispatch, data);
       })
       .catch((err) => console.error("Error:", err));
   }, []);
@@ -42,13 +45,15 @@ const DataProvider = ({ children }) => {
           }
           return section;
         });
-        setSections(updatedSections);
+        setSectionsAction(sectionsDispatch, updatedSections);
       })
       .catch((err) => console.error("Amit Error:", err));
   }
 
   return (
-    <DataContext.Provider value={{ sections, onChangeGraphDataTimeRange }}>
+    <DataContext.Provider
+      value={{ sections, sectionsDispatch, onChangeGraphDataTimeRange }}
+    >
       {children}
     </DataContext.Provider>
   );

@@ -33,6 +33,7 @@ export interface HospitalBedOccupancyItem {
 }
 
 export interface IncomingPersonsItem {
+  id: number;
   srcCountry: string;
   riskLevel: string;
   TotalAmount: number;
@@ -50,6 +51,16 @@ export interface TrafficLightProgramItem {
   vrifiedChangeRate: number;
   activePatients: number;
 }
+
+export type RowType =
+  | "hospitalBedOccupancy"
+  | "incomingPersons"
+  | "trafficLightProgram";
+
+export type RowItem =
+  | HospitalBedOccupancyItem
+  | IncomingPersonsItem
+  | TrafficLightProgramItem;
 
 export type Table =
   | HospitalBedOccupancyTable

@@ -1,8 +1,8 @@
 const colorMap = ({ colorsMap, tableType }) => {
   const itemTitleObj = {
-    High: tableType === "IncomingPersons" ? "מדינות בסיכון מירבי" : "אדום",
-    Medium: tableType === "IncomingPersons" ? "מדינות בסיכון" : "כתום",
-    Low: tableType === "IncomingPersons" ? "מדינות בסיכון נמוך" : "צהוב",
+    High: tableType === "incomingPersons" ? "מדינות בסיכון מירבי" : "אדום",
+    Medium: tableType === "incomingPersons" ? "מדינות בסיכון" : "כתום",
+    Low: tableType === "incomingPersons" ? "מדינות בסיכון נמוך" : "צהוב",
     None: "ירוק",
   };
 

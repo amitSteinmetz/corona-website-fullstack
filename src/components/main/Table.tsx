@@ -10,7 +10,15 @@ import MoreActionsButton from "./MoreActionsButton";
 import { useState } from "react";
 import ColorMap from "./ColorMap";
 
-const TableComponent = ({ table }: { table: Table }) => {
+const TableComponent = ({
+  table,
+  onRowClicked,
+  onKeyDownOnRow,
+}: {
+  table: Table;
+  onRowClicked?: (row) => void;
+  onKeyDownOnRow?: (event, row) => void;
+}) => {
   const [selectedRows, setSelectedRows] = useState<
     | HospitalBedOccupancyItem[]
     | IncomingPersonsItem[]
@@ -55,7 +63,7 @@ const TableComponent = ({ table }: { table: Table }) => {
   }
 
   function getRowKey(row) {
-    if (table.type === "IncomingPersons") {
+    if (table.type === "incomingPersons") {
       return (row as IncomingPersonsItem).srcCountry;
     } else if (table.type === "hospitalBedOccupancy") {
       return (row as HospitalBedOccupancyItem).hospitalName;
@@ -65,7 +73,7 @@ const TableComponent = ({ table }: { table: Table }) => {
   }
 
   function getFilterPlaceholder() {
-    if (table.type === "IncomingPersons") {
+    if (table.type === "incomingPersons") {
       return "מדינות";
     } else if (table.type === "hospitalBedOccupancy") {
       return "בתי חולים/מוסדות";
@@ -269,7 +277,7 @@ const TableComponent = ({ table }: { table: Table }) => {
         )}
       </div>
 
-      {(table.type === "IncomingPersons" ||
+      {(table.type === "incomingPersons" ||
         table.type === "trafficLightProgram") && (
         <ColorMap colorsMap={levelsColors} tableType={table.type} />
       )}
@@ -301,7 +309,13 @@ const TableComponent = ({ table }: { table: Table }) => {
 
           <tbody>
             {selectedRowsOrdered.map((row) => (
-              <tr>{renderRow(row)}</tr>
+              <tr
+                onClick={() => onRowClicked?.(row)}
+                onKeyDown={(event) => onKeyDownOnRow?.(event, row)}
+                tabIndex={0}
+              >
+                {renderRow(row)}
+              </tr>
             ))}
           </tbody>
         </table>
