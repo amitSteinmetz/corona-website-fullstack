@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("corona-server-side-asp.net")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a260491258669df2bda37c7e665ac93bd44187a3")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f9491db98429f795ec7cb9f921f3111ccdde797e")]
 [assembly: System.Reflection.AssemblyProductAttribute("corona-server-side-asp.net")]
 [assembly: System.Reflection.AssemblyTitleAttribute("corona-server-side-asp.net")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

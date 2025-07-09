@@ -8,6 +8,7 @@ namespace corona_server_side_asp.net.IRepositories
         Task<TableModel> GetTable(int sectionId, int tableId);
         Task<int> DeleteTable(int sectionId, int tableId);
         Task AddRowToTable<T>(int sectionId, int tableId, T row);
+        Task EditRow<T>(int sectionId, int tableId, int rowId, T row);
         Task DeleteRowFromTable(int sectionId, int tableId, int rowId);
     }
 }

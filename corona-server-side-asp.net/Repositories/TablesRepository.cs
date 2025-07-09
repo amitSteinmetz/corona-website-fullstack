@@ -93,9 +93,82 @@ namespace corona_server_side_asp.net.Repositories
                 if (row is not TrafficLightProgramItem trafficLightRow)
                     throw new ArgumentException("Row must be of type TrafficLightProgramItem");
                 trafficLightProgramTable.Rows.Add(trafficLightRow);
-                _context.TrafficLightProgramItems.Add(trafficLightRow);
             }
-            else throw new ArgumentException("Table is not of type IncomingPersonsTable");
+            else if (table is IncomingPersonsTable incomingPersonsTable)
+            {
+                if (row is not IncomingPersonsItem incomingPersonsRow)
+                    throw new ArgumentException("Row must be of type IncomingPersonsItem");
+                incomingPersonsTable.Rows.Add(incomingPersonsRow);
+            }
+            else if (table is HospitalBedOccupancyTable hospitalBedOccupancyTable)
+            {
+                if (row is not HospitalBedOccupancyItem hospitalBedRow)
+                    throw new ArgumentException("Row must be of type HospitalBedOccupancyItem");
+                hospitalBedOccupancyTable.Rows.Add(hospitalBedRow);
+            }
+            else throw new ArgumentException("Unsupported table type");
+            
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task EditRow<T>(int sectionId, int tableId, int rowId ,T row)
+        {
+            var section = await _context.Sections
+                .Include(s => s.Tables)
+                .FirstOrDefaultAsync(s => s.Id == sectionId);
+            if (section == null) throw new ArgumentException("Section not found");
+
+            var table = section.Tables.FirstOrDefault(t => t.Id == tableId);
+            if (table == null) throw new ArgumentException("Table not found in the specified section");
+
+            if (table is TrafficLightProgramTable trafficLightProgramTable)
+            {
+                if (row is not TrafficLightProgramItem trafficLightRow)
+                    throw new ArgumentException("Row must be of type TrafficLightProgramItem");
+
+                await _context.Entry(trafficLightProgramTable).Collection(tt => tt.Rows).LoadAsync();
+
+                var existingRow = trafficLightProgramTable.Rows.FirstOrDefault(r => r.Id == rowId);
+                if (existingRow == null) throw new ArgumentException("Row not found in the TrafficLightProgramTable");
+
+                existingRow.ActivePatients = trafficLightRow.ActivePatients;
+                existingRow.City = trafficLightRow.City;
+                existingRow.DailyScore = trafficLightRow.DailyScore;
+                existingRow.NewPatientsPer10000People = trafficLightRow.NewPatientsPer10000People;
+                existingRow.PositiveTestsPercentage = trafficLightRow.PositiveTestsPercentage;
+                existingRow.VerifiedChangeRate = trafficLightRow.VerifiedChangeRate;
+            }
+            else if (table is IncomingPersonsTable incomingPersonsTable)
+            {
+                if (row is not IncomingPersonsItem incomingPersonsRow)
+                    throw new ArgumentException("Row must be of type IncomingPersonsItem");
+
+                await _context.Entry(incomingPersonsTable).Collection(tt => tt.Rows).LoadAsync();
+
+                var existingRow = incomingPersonsTable.Rows.FirstOrDefault(r => r.Id == rowId);
+                if (existingRow == null) throw new ArgumentException("Row not found in the IncomingPersonsTable");
+
+                existingRow.RiskLevel = incomingPersonsRow.RiskLevel;
+                existingRow.SrcCountry = incomingPersonsRow.SrcCountry;
+                existingRow.TotalAmount = incomingPersonsRow.TotalAmount;
+                existingRow.VerifiedCitizensAmount = incomingPersonsRow.VerifiedCitizensAmount;
+                existingRow.VerifiedStrangersAmount = incomingPersonsRow.VerifiedStrangersAmount;
+            }
+            else if (table is HospitalBedOccupancyTable hospitalBedOccupancyTable)
+            {
+                if (row is not HospitalBedOccupancyItem hospitalBedRow)
+                    throw new ArgumentException("Row must be of type HospitalBedOccupancyItem");
+
+                await _context.Entry(hospitalBedOccupancyTable).Collection(tt => tt.Rows).LoadAsync();
+
+                var existingRow = hospitalBedOccupancyTable.Rows.FirstOrDefault(r => r.Id == rowId);
+                if (existingRow == null) throw new ArgumentException("Row not found in the HospitalBedOccupancyTable");
+
+                existingRow.HospitalName = hospitalBedRow.HospitalName;
+                existingRow.InternalDepartmentBedOccupancy = hospitalBedRow.InternalDepartmentBedOccupancy;
+                existingRow.GeneralBedOccupancy = hospitalBedRow.GeneralBedOccupancy;
+            }
+            else throw new ArgumentException("Unsupported table type");
 
             await _context.SaveChangesAsync();
         }
@@ -103,13 +176,12 @@ namespace corona_server_side_asp.net.Repositories
         public async Task DeleteRowFromTable(int sectionId, int tableId, int rowId)
         {
             var section = await _context.Sections
-                .Include(s => s.Tables).Include(s => s.Tables)
+                .Include(s => s.Tables)
                 .FirstOrDefaultAsync(s => s.Id == sectionId);
             if (section == null) throw new ArgumentException("Section not found");
 
             var table = section.Tables.FirstOrDefault(t => t.Id == tableId);
             if (table == null) throw new ArgumentException("Table not found in the specified section");
-
 
             if (table is IncomingPersonsTable)
             {
@@ -120,7 +192,7 @@ namespace corona_server_side_asp.net.Repositories
 
                 var row = incomingPersonsTable.Rows.FirstOrDefault(r => r.Id == rowId);
                 if (row == null) throw new ArgumentException("Row not found in the IncomingPersonsTable");
-                incomingPersonsTable.Rows.Remove(row);
+                //incomingPersonsTable.Rows.Remove(row);
                 _context.IncomingPersonsItems.Remove(row);
             }
             else if (table is HospitalBedOccupancyTable)
@@ -132,7 +204,7 @@ namespace corona_server_side_asp.net.Repositories
 
                 var row = hospitalBedOccupancyTable.Rows.FirstOrDefault(r => r.Id == rowId);
                 if (row == null) throw new ArgumentException("Row not found in the IncomingPersonsTable");
-                hospitalBedOccupancyTable.Rows.Remove(row);
+                //hospitalBedOccupancyTable.Rows.Remove(row);
                 _context.HospitalBedOccupancyItems.Remove(row);
             }
             else if (table is TrafficLightProgramTable)
@@ -144,7 +216,7 @@ namespace corona_server_side_asp.net.Repositories
 
                 var row = trafficLightProgramTable.Rows.FirstOrDefault(r => r.Id == rowId);
                 if (row == null) throw new ArgumentException("Row not found in the IncomingPersonsTable");
-                trafficLightProgramTable.Rows.Remove(row);
+                //trafficLightProgramTable.Rows.Remove(row);
                 _context.TrafficLightProgramItems.Remove(row);
             }
 

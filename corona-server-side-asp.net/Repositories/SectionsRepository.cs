@@ -1,13 +1,8 @@
 ﻿using corona_server_side_asp.net.Data;
-using corona_server_side_asp.net.Helpers;
 using corona_server_side_asp.net.IRepositories;
-using corona_server_side_asp.net.Repositories;
 using corona_server_side_asp.net.Models;
 using corona_server_side_asp.net.Models.Cards;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json.Nodes;
-using System.Text.Json;
-using static System.Collections.Specialized.BitVector32;
 using corona_server_side_asp.net.Models.Tables;
 
 namespace corona_server_side_asp.net.Repositories
@@ -25,15 +20,26 @@ namespace corona_server_side_asp.net.Repositories
 
         public async Task<List<SectionModel>> GetSectionsAsync()
         {
-            await PreloadSubTypes();
-
             var sections = await _context.Sections
             .Include(s => s.Cards)
             .Include(s => s.RelatedLinks)
             .Include(s => s.Tables)
                 .ThenInclude(t => t.Columns)
             .ToListAsync();
-               
+
+            foreach(var section in sections)
+            {
+                foreach (var card in section.Cards)
+                {
+                    await LoadExtraCardData(card);
+                }
+
+                foreach (var table in section.Tables)
+                {
+                    await LoadExtraTableData(table);
+                }
+            }
+
             _cardsRepository.WriteExcelDataToCards(ref sections);
             return sections;
         }
@@ -46,14 +52,33 @@ namespace corona_server_side_asp.net.Repositories
             return await _context.SaveChangesAsync();
         }
 
-        private async Task PreloadSubTypes()
+        private async Task LoadExtraCardData(CardModel card)
         {
-            await _context.Set<TextualCardModel>().Include(tc => tc.Data).LoadAsync();
-            await _context.Set<ContainerCardModel>().Include(cc => cc.Children).LoadAsync();
-            await _context.Set<GraphicalCardModel>().LoadAsync();
-            await _context.Set<HospitalBedOccupancyTable>().Include(ht => ht.Rows).LoadAsync();
-            await _context.Set<IncomingPersonsTable>().Include(it => it.Rows).LoadAsync();
-            await _context.Set<TrafficLightProgramTable>().Include(tt => tt.Rows).LoadAsync();
+            switch (card)
+            {
+                case TextualCardModel textualCard:
+                    await _context.Entry(textualCard).Collection(tc => tc.Data).LoadAsync();
+                    break;
+                case ContainerCardModel containerCard:
+                    await _context.Entry(containerCard).Collection(cc => cc.Children).LoadAsync();
+                    break;
+            }
+        }
+
+        private async Task LoadExtraTableData(TableModel table)
+        {
+            switch (table)
+            {
+                case IncomingPersonsTable incomingPersonsTable:
+                    await _context.Entry(incomingPersonsTable).Collection(it => it.Rows).LoadAsync();
+                    break;
+                case HospitalBedOccupancyTable hospitalBedOccupancyTable:
+                    await _context.Entry(hospitalBedOccupancyTable).Collection(ht => ht.Rows).LoadAsync();
+                    break;
+                case TrafficLightProgramTable trafficLightProgramTable:
+                    await _context.Entry(trafficLightProgramTable).Collection(tt => tt.Rows).LoadAsync();
+                    break;
+            }
         }
 
         public async Task<int> AddLinksToSection(int sectionId, List<LinkModel> links)

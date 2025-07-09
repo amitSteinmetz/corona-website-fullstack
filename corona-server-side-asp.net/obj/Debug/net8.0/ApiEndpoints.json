@@ -158,58 +158,6 @@
   },
   {
     "ContainingType": "corona_server_side_asp.net.Controllers.TablesController",
-    "Method": "AddIncomingRowToTable",
-    "RelativePath": "api/Tables",
-    "HttpMethod": "",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "sectionId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "tableId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "row",
-        "Type": "corona_server_side_asp.net.Models.Tables.IncomingPersonsItem",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "corona_server_side_asp.net.Controllers.TablesController",
-    "Method": "AddHospitalRowToTable",
-    "RelativePath": "api/Tables",
-    "HttpMethod": "",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "sectionId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "tableId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "row",
-        "Type": "corona_server_side_asp.net.Models.Tables.HospitalBedOccupancyItem",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "corona_server_side_asp.net.Controllers.TablesController",
     "Method": "AddTableToSection",
     "RelativePath": "api/Tables/{sectionId}",
     "HttpMethod": "POST",
@@ -273,8 +221,60 @@
   },
   {
     "ContainingType": "corona_server_side_asp.net.Controllers.TablesController",
+    "Method": "AddHospitalBedOccupancyRowToTable",
+    "RelativePath": "api/Tables/add-row/hospital-bed-occupancy/{sectionId}/{tableId}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "sectionId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "tableId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "row",
+        "Type": "corona_server_side_asp.net.Models.Tables.HospitalBedOccupancyItem",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "corona_server_side_asp.net.Controllers.TablesController",
+    "Method": "AddIncomingPersonsRowToTable",
+    "RelativePath": "api/Tables/add-row/incoming-persons/{sectionId}/{tableId}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "sectionId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "tableId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "row",
+        "Type": "corona_server_side_asp.net.Models.Tables.IncomingPersonsItem",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "corona_server_side_asp.net.Controllers.TablesController",
     "Method": "AddTrafficRowToTable",
-    "RelativePath": "api/Tables/add-row/{sectionId}/{tableId}",
+    "RelativePath": "api/Tables/add-row/traffic-light-program/{sectionId}/{tableId}",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -318,6 +318,99 @@
       {
         "Name": "rowId",
         "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "corona_server_side_asp.net.Controllers.TablesController",
+    "Method": "EditHospitalBedOccupancyRow",
+    "RelativePath": "api/Tables/update-row/hospital-bed-occupancy/{sectionId}/{tableId}/{rowId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "sectionId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "tableId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "rowId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "row",
+        "Type": "corona_server_side_asp.net.Models.Tables.HospitalBedOccupancyItem",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "corona_server_side_asp.net.Controllers.TablesController",
+    "Method": "EditIncomingPersonsRow",
+    "RelativePath": "api/Tables/update-row/incoming-persons/{sectionId}/{tableId}/{rowId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "sectionId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "tableId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "rowId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "row",
+        "Type": "corona_server_side_asp.net.Models.Tables.IncomingPersonsItem",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "corona_server_side_asp.net.Controllers.TablesController",
+    "Method": "EditTrafficLightProgramRow",
+    "RelativePath": "api/Tables/update-row/traffic-light-program/{sectionId}/{tableId}/{rowId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "sectionId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "tableId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "rowId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "row",
+        "Type": "corona_server_side_asp.net.Models.Tables.TrafficLightProgramItem",
         "IsRequired": true
       }
     ],
