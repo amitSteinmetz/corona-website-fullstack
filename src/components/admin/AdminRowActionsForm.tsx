@@ -93,21 +93,21 @@ const AdminRowActionsForm = ({
       {columns.map((column) => {
         return (
           <div>
-            <label>{column.value}</label>
-            {(action === "add" || allowEditField[column.key]) && (
+            <label>{column?.value}</label>
+            {(action === "add" || allowEditField[column?.key]) && (
               <input
                 type="text"
-                name={column.key}
-                value={formData[column.key] || ""}
+                name={column?.key}
+                value={formData[column?.key] || ""}
                 onChange={onChangeInput}
               />
             )}
             {action === "edit" && (
               <div
                 className="row-actions-form__field"
-                onClick={() => enableEditRow(column.key)}
+                onClick={() => enableEditRow(column?.key)}
               >
-                {currentRow[column.key]}
+                {currentRow[column?.key]}
               </div>
             )}
           </div>

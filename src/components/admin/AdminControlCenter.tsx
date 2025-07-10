@@ -21,17 +21,18 @@ const AdminControlCenter = () => {
 
   function onActionRowButtonClicked(action: string) {
     setShowAddRowForm(true);
+    setShowModal(false);
     setRowAction(action);
   }
 
   function onDeleteRowButtonClicked() {
+    setShowModal(false);
     deleteRowAction(
       sectionsDispatch,
       chosenSectionId,
       chosenTableId,
       chosenRowId
     );
-    setShowModal(false);
   }
 
   const handleRowClick = (row) => {
@@ -137,11 +138,22 @@ const AdminControlCenter = () => {
       </>
 
       {showModal && (
-        <div className="row-actions-modal">
-          <button onClick={() => onActionRowButtonClicked("edit")}>
-            ערוך רשומה
-          </button>
-          <button onClick={onDeleteRowButtonClicked}>מחק רשומה</button>
+        <div className="row-actions-container">
+          <div className="row-actions-modal">
+            <button
+              className="row-actions-modal__close-btn"
+              onClick={() => setShowModal(false)}
+            >
+              X
+            </button>
+            <div className="bold">בחר פעולה:</div>
+            <div className="row-actions-modal__buttons">
+              <button onClick={() => onActionRowButtonClicked("edit")}>
+                ערוך רשומה
+              </button>
+              <button onClick={onDeleteRowButtonClicked}>מחק רשומה</button>
+            </div>
+          </div>
         </div>
       )}
 
