@@ -10,7 +10,7 @@ export async function editRowAction(
   tableId,
   rowId,
   rowType: string,
-  updatedRow: RowItem
+  updatedRow
 ) {
   try {
     const res = await fetch(
@@ -24,6 +24,7 @@ export async function editRowAction(
       }
     );
     const response = await res.json();
+    console.log("Response from editRowAction:", response);
     dispatch({ type: "EDIT_ROW", payload: response });
   } catch (err) {
     console.error("Failed to edit row", err);

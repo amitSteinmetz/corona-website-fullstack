@@ -7,17 +7,15 @@ import {
   Table,
 } from "../../models/table.model";
 import MoreActionsButton from "./MoreActionsButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ColorMap from "./ColorMap";
 
 const TableComponent = ({
   table,
   onRowClicked,
-  onKeyDownOnRow,
 }: {
   table: Table;
   onRowClicked?: (row) => void;
-  onKeyDownOnRow?: (event, row) => void;
 }) => {
   const [selectedRows, setSelectedRows] = useState<
     | HospitalBedOccupancyItem[]
@@ -31,6 +29,9 @@ const TableComponent = ({
   >(table.rows);
   const [sortColumn, setSortColumn] = useState(null);
   const [sortDirection, setSortDirection] = useState("asc");
+  const [markSelectedRow, setMarkSelectedRow] = useState<{
+    [rowId: number]: any;
+  }>(initMarkSelectedRowState());
   const [showTableFilterList, setShowTableFilterList] = useState(false);
   const [filterListCheckedBoxes, setFilterListCheckedBoxes] = useState(
     Object.fromEntries(table.rows.map((row) => [getRowKey(row), true]))
@@ -41,6 +42,45 @@ const TableComponent = ({
     Low: "yellow",
     None: "green",
   };
+
+  useEffect(() => {
+    setSelectedRows(table.rows);
+    setSelectedRowsOrdered(table.rows);
+  }, [table]);
+
+  function initMarkSelectedRowState() {
+    const data = {};
+    table.rows.forEach((row) => {
+      data[row.id] = {
+        firstClick: false,
+        secondClick: false,
+      };
+    });
+    return data;
+  }
+
+  function onRowClickedHandler(row) {
+    const rowClicks = { firstClick: false, secondClick: false };
+
+    if (!markSelectedRow[row.id].firstClick) {
+      rowClicks.firstClick = true;
+    } else if (!markSelectedRow[row.id].secondClick) {
+      rowClicks.firstClick = true;
+      rowClicks.secondClick = true;
+    }
+    onRowClicked?.(row);
+
+    setMarkSelectedRow((prev) => {
+      const newMarkSelectedRow = {};
+      Object.keys(prev).forEach((rowId) => {
+        if (rowId !== row.id) {
+          newMarkSelectedRow[rowId] = { firstClick: false, secondClick: false };
+        }
+      });
+      newMarkSelectedRow[row.id] = rowClicks;
+      return newMarkSelectedRow;
+    });
+  }
 
   function getDailyScoreColor(row, columnName) {
     const dailyScore = row[columnName];
@@ -310,9 +350,13 @@ const TableComponent = ({
           <tbody>
             {selectedRowsOrdered.map((row) => (
               <tr
-                onClick={() => onRowClicked?.(row)}
-                onKeyDown={(event) => onKeyDownOnRow?.(event, row)}
+                onClick={(event) => onRowClickedHandler(row)}
                 tabIndex={0}
+                className={`${
+                  markSelectedRow[row.id].firstClick ? "selected-first" : ""
+                } ${
+                  markSelectedRow[row.id].secondClick ? "selected-second" : ""
+                }`}
               >
                 {renderRow(row)}
               </tr>

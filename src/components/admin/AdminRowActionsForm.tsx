@@ -1,6 +1,5 @@
-import { useContext, useEffect, useState } from "react";
-import { RowItem, RowType, TableColumn } from "../../models/table.model";
-import { rowFactory } from "../../utils/RowFactory";
+import { useContext, useState } from "react";
+import { RowItem, TableColumn } from "../../models/table.model";
 import { DataContext } from "../../contexts/DataContext";
 import { addRowAction, editRowAction } from "../../actions/AdminActions";
 
@@ -27,10 +26,6 @@ const AdminRowActionsForm = ({
     [columnName: string]: Boolean;
   }>(initAllowEditField());
 
-  useEffect(() => {
-    console.log(formData)
-  }, [formData])
-
   function initFormData() {
     if (action === "edit" && currentRow) {
       const initialData = {};
@@ -38,8 +33,7 @@ const AdminRowActionsForm = ({
         initialData[column.key] = currentRow[column.key];
       });
       return initialData;
-    }
-    else return {};
+    } else return {};
   }
 
   function initAllowEditField() {
@@ -60,32 +54,34 @@ const AdminRowActionsForm = ({
   function onSubmitForm(event) {
     event.preventDefault();
 
-    const newRow = rowFactory[rowType as RowType]();
-    columns.forEach((column) => {
-      newRow[column.key] = formData[column.key] || null;
-    });
+    const updatedFormData = currentRow
+      ? { ...formData, id: currentRow.id }
+      : { ...formData };
 
     if (action === "edit") {
-      console.log(newRow);
       editRowAction(
         sectionsDispatch,
         sectionId,
         tableId,
         currentRow.id,
         rowType,
-        newRow
+        updatedFormData
       );
       setAllowEditField(initAllowEditField());
     } else if (action === "add") {
-      addRowAction(sectionsDispatch, sectionId, tableId, newRow, rowType);
+      addRowAction(
+        sectionsDispatch,
+        sectionId,
+        tableId,
+        updatedFormData,
+        rowType
+      );
     }
 
     setFormData({});
   }
 
   function enableEditRow(columnName: string) {
-    console.log(columnName);
-
     setAllowEditField((prev) => ({
       ...prev,
       [columnName]: !prev[columnName],

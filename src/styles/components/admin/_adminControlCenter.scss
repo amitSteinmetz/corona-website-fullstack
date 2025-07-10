@@ -12,27 +12,29 @@
 
   .admin-control-center__selection-container {
     display: flex;
+    flex-direction: column;
 
     .admin-control-center__selection-box {
       margin: 1.5rem 0;
       display: flex;
+      align-items: flex-start;
 
       .admin-control-center__selection-box__title,
       .admin-control-center__selection-box__options {
         background: white;
         border-radius: 10px;
         box-shadow: 0 3px 3px rgba(0, 0, 0, 0.1);
-        width: fit-content;
         padding: 0.5rem 1rem;
         cursor: pointer;
       }
 
       .admin-control-center__selection-box__title {
-        height: 38px;
+        text-align: center;
+        width: 83px;
       }
 
       .admin-control-center__selection-box__options {
-        margin: 1rem 2rem 1rem 0;
+        margin: 0 1rem;
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
@@ -51,6 +53,68 @@
           }
         }
       }
+    }
+  }
+
+  .admin-control-center__table-greeting {
+    margin: 1.5rem 0;
+    color: $darkBlueBackground;
+    display: inline-block;
+  }
+
+  .admin-control-center__action-button {
+    background-color: $textBasicColor;
+    color: white;
+    padding: 0.4rem;
+    font-size: 1.2rem;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    border: none;
+    position: absolute;
+    left: 32px;
+    transform: translateY(20px);
+    transition: all 0.05s linear;
+
+    &:hover {
+      background-color: #0499c7;
+      color: $textBasicColor;
+    }
+
+    .admin-control-center__action-button__extra-text {
+      display: none;
+      margin-left: 0.5rem;
+      font-size: 1rem;
+    }
+  }
+}
+
+@media (min-width: 500px) {
+  .control-center__container {
+    .admin-control-center__action-button {
+      border-radius: 15px;
+      padding: 0.5rem 1rem;
+
+      .admin-control-center__action-button__extra-text {
+        display: inline-block;
+      }
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .control-center__container {
+    .admin-control-center__selection-container {
+      flex-direction: row;
+
+      .admin-control-center__selection-box
+        .admin-control-center__selection-box__options {
+        margin-left: 3rem;
+      }
+    }
+
+    .admin-control-center__action-button {
     }
   }
 }

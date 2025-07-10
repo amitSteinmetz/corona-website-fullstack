@@ -1,33 +1,23 @@
-import { useState, useContext, useMemo } from "react";
+import { useState, useContext } from "react";
 import { DataContext } from "../../contexts/DataContext";
-import CardRenderer from "../main/cards/CardRenderer";
-import TableComponent from "../main/Table";
 import { deleteRowAction } from "../../actions/AdminActions";
 import AdminRowActionsForm from "./AdminRowActionsForm";
+import TableComponent from "../main/Table";
+import { IoMdAdd } from "react-icons/io";
+import { on } from "events";
 
 const AdminControlCenter = () => {
   const { sections, sectionsDispatch } = useContext(DataContext);
-  const [chosenSection, setChosenSection] = useState(null);
-  const [chosenSectionItem, setchosenSectionItem] = useState({
-    item: null,
-    type: "",
-  });
-  const [selectedRow, setSelectedRow] = useState(null);
+  const [chosenSectionId, setChosenSectionId] = useState<number | null>(null);
+  const [chosenTableId, setChosenTableId] = useState<number | null>(null);
+  const [chosenRowId, setChosenRowId] = useState<number | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [showAddRowForm, setShowAddRowForm] = useState(false);
   const [rowAction, setRowAction] = useState("");
-  const filteredSections = useMemo(() => {
-    return sections?.filter((section) => section.tables.length > 0);
-  }, [sections]);
 
-  const handleRowClick = (row) => {
-    if (selectedRow === row) setShowModal(true);
-    else setSelectedRow(row);
-  };
-
-  const handleKeyDown = (event, row) => {
-    if (event.key === "Enter" && selectedRow === row) setShowModal(true);
-  };
+  const chosenSection = sections.find((s) => s.id === chosenSectionId);
+  const chosenTable = chosenSection?.tables.find((t) => t.id === chosenTableId);
+  const chosenRow = chosenTable?.rows.find((r) => r.id === chosenRowId);
 
   function onActionRowButtonClicked(action: string) {
     setShowAddRowForm(true);
@@ -37,33 +27,24 @@ const AdminControlCenter = () => {
   function onDeleteRowButtonClicked() {
     deleteRowAction(
       sectionsDispatch,
-      chosenSection.id,
-      chosenSectionItem.item.id,
-      selectedRow.id
+      chosenSectionId,
+      chosenTableId,
+      chosenRowId
     );
     setShowModal(false);
   }
 
-  function renderItem(item) {
-    if (item.type === "card") {
-      return (
-        <CardRenderer
-          sectionId={chosenSection?.id}
-          card={chosenSectionItem.item}
-          hasContainerParent={chosenSectionItem.item.type === "container"}
-        />
-      );
-    } else if (item.type === "table") {
-      return (
-        <TableComponent
-          table={chosenSectionItem.item}
-          onRowClicked={handleRowClick}
-          onKeyDownOnRow={handleKeyDown}
-        />
-      );
+  const handleRowClick = (row) => {
+    if (chosenRow === row) {
+      if (showModal) {
+        setShowModal(false);
+        setChosenRowId(null);
+      } else setShowModal(true);
+    } else {
+      setShowModal(false);
+      setChosenRowId(row.id);
     }
-    return null;
-  }
+  };
 
   return (
     <div className="control-center__container">
@@ -72,28 +53,30 @@ const AdminControlCenter = () => {
       <>
         <div className="admin-control-center__selection-container">
           <div className="admin-control-center__selection-box">
-            <div className="admin-control-center__selection-box__title">
+            <div className="admin-control-center__selection-box__title bold">
               בחר מחלקה
             </div>
 
             <div className="admin-control-center__selection-box__options">
-              {filteredSections ? (
-                filteredSections.map((section) => {
-                  return (
-                    <div
-                      className={`semibold admin-control-center__selection-box__options__item ${
-                        chosenSection?.title === section.title ? "active" : ""
-                      }`}
-                      onClick={() => {
-                        setChosenSection(section);
-                        setchosenSectionItem(null);
-                        setShowAddRowForm(false);
-                      }}
-                    >
-                      {section.title}
-                    </div>
-                  );
-                })
+              {sections ? (
+                sections
+                  .filter((section) => section.tables.length > 0)
+                  .map((section) => {
+                    return (
+                      <div
+                        className={`semibold admin-control-center__selection-box__options__item ${
+                          chosenSection?.title === section.title ? "active" : ""
+                        }`}
+                        onClick={() => {
+                          setChosenSectionId(section.id);
+                          setChosenTableId(null);
+                          setShowAddRowForm(false);
+                        }}
+                      >
+                        {section.title}
+                      </div>
+                    );
+                  })
               ) : (
                 <div>loading..</div>
               )}
@@ -102,35 +85,20 @@ const AdminControlCenter = () => {
 
           <div className="admin-control-center__selection-box">
             {chosenSection && (
-              <div className="admin-control-center__selection-box__title">
+              <div className="admin-control-center__selection-box__title bold">
                 בחר טבלה
               </div>
             )}
             {chosenSection && (
               <div className="admin-control-center__selection-box__options">
-                {chosenSection.cards.map((card) => {
-                  return (
-                    <div
-                      className={`semibold admin-control-center__selection-box__options__item ${
-                        chosenSectionItem?.item?.id === card.id ? "active" : ""
-                      }`}
-                      onClick={() =>
-                        setchosenSectionItem({ item: card, type: "card" })
-                      }
-                    >
-                      {card.title}
-                    </div>
-                  );
-                })}
-
                 {chosenSection.tables.map((table) => {
                   return (
                     <div
                       className={`semibold admin-control-center__selection-box__options__item ${
-                        chosenSectionItem?.item?.id === table.id ? "active" : ""
+                        chosenTableId === table.id ? "active" : ""
                       }`}
                       onClick={() => {
-                        setchosenSectionItem({ item: table, type: "table" });
+                        setChosenTableId(table.id);
                         setShowModal(false);
                       }}
                     >
@@ -142,34 +110,49 @@ const AdminControlCenter = () => {
             )}
           </div>
         </div>
-        {chosenSectionItem && (
-          <>
-            <h4>הקש על רשומה כדי לבצע פעולות:</h4>
-            <button onClick={() => onActionRowButtonClicked("add")}>
-              הוסף רשומה
-            </button>
-            {renderItem(chosenSectionItem)}
 
-            {showModal && (
-              <div className="row-actions-modal">
-                <button onClick={() => onActionRowButtonClicked("edit")}>
-                  ערוך רשומה
-                </button>
-                <button onClick={onDeleteRowButtonClicked}>מחק רשומה</button>
-              </div>
+        {chosenTableId && (
+          <>
+            <h4 className="admin-control-center__table-greeting">
+              הקש על רשומה כדי לבצע פעולות:
+            </h4>
+            <button
+              className="admin-control-center__action-button"
+              onClick={() => onActionRowButtonClicked("add")}
+            >
+              <span className="admin-control-center__action-button__extra-text">
+                {" הוסף רשומה"}
+              </span>
+              <IoMdAdd />
+            </button>
+
+            {chosenTableId && (
+              <TableComponent
+                table={chosenTable}
+                onRowClicked={handleRowClick}
+              />
             )}
           </>
         )}
       </>
 
+      {showModal && (
+        <div className="row-actions-modal">
+          <button onClick={() => onActionRowButtonClicked("edit")}>
+            ערוך רשומה
+          </button>
+          <button onClick={onDeleteRowButtonClicked}>מחק רשומה</button>
+        </div>
+      )}
+
       {showAddRowForm && (
         <AdminRowActionsForm
-          currentRow={selectedRow}
+          currentRow={chosenRow}
           action={rowAction}
-          rowType={chosenSectionItem?.item.type}
-          columns={chosenSectionItem?.item.columns}
+          rowType={chosenTable?.type}
+          columns={chosenTable?.columns}
           sectionId={chosenSection?.id}
-          tableId={chosenSectionItem?.item.id}
+          tableId={chosenTable?.id}
         />
       )}
     </div>
