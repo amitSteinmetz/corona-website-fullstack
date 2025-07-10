@@ -4,7 +4,8 @@ import { deleteRowAction } from "../../actions/AdminActions";
 import AdminRowActionsForm from "./AdminRowActionsForm";
 import TableComponent from "../main/Table";
 import { IoMdAdd } from "react-icons/io";
-import { on } from "events";
+import { MdClose } from "react-icons/md";
+
 
 const AdminControlCenter = () => {
   const { sections, sectionsDispatch } = useContext(DataContext);
@@ -12,21 +13,30 @@ const AdminControlCenter = () => {
   const [chosenTableId, setChosenTableId] = useState<number | null>(null);
   const [chosenRowId, setChosenRowId] = useState<number | null>(null);
   const [showModal, setShowModal] = useState(false);
-  const [showAddRowForm, setShowAddRowForm] = useState(false);
+  const [showAddRowForm, setRowActionForm] = useState(false);
+  const [showRowSuccessfulActionModal, setShowRowSuccessfulActionModal] = useState(false);
   const [rowAction, setRowAction] = useState("");
 
   const chosenSection = sections.find((s) => s.id === chosenSectionId);
   const chosenTable = chosenSection?.tables.find((t) => t.id === chosenTableId);
   const chosenRow = chosenTable?.rows.find((r) => r.id === chosenRowId);
 
+  function displayDeletedRowModal() {
+    setShowRowSuccessfulActionModal(true);
+    setTimeout(() => {
+      setShowRowSuccessfulActionModal(false);
+    }, 4000);
+  }
+
   function onActionRowButtonClicked(action: string) {
-    setShowAddRowForm(true);
+    setRowActionForm(true);
     setShowModal(false);
     setRowAction(action);
   }
 
   function onDeleteRowButtonClicked() {
     setShowModal(false);
+    displayDeletedRowModal();
     deleteRowAction(
       sectionsDispatch,
       chosenSectionId,
@@ -71,7 +81,7 @@ const AdminControlCenter = () => {
                         onClick={() => {
                           setChosenSectionId(section.id);
                           setChosenTableId(null);
-                          setShowAddRowForm(false);
+                          setRowActionForm(false);
                         }}
                       >
                         {section.title}
@@ -144,7 +154,7 @@ const AdminControlCenter = () => {
               className="row-actions-modal__close-btn"
               onClick={() => setShowModal(false)}
             >
-              X
+              <MdClose />
             </button>
             <div className="bold">בחר פעולה:</div>
             <div className="row-actions-modal__buttons">
@@ -165,7 +175,14 @@ const AdminControlCenter = () => {
           columns={chosenTable?.columns}
           sectionId={chosenSection?.id}
           tableId={chosenTable?.id}
+          setRowActionForm={setRowActionForm}
         />
+      )}
+
+      {showRowSuccessfulActionModal && (
+        <div className="row-successful-action-modal">
+          <span className="bold">רשומה נמחקה בהצלחה!</span>
+        </div>
       )}
     </div>
   );

@@ -62,14 +62,12 @@ const TableComponent = ({
   function onRowClickedHandler(row) {
     const rowClicks = { firstClick: false, secondClick: false };
 
-    if (!markSelectedRow[row.id].firstClick) {
+    if (!markSelectedRow[row.id]?.firstClick) {
       rowClicks.firstClick = true;
-    } else if (!markSelectedRow[row.id].secondClick) {
+    } else if (!markSelectedRow[row.id]?.secondClick) {
       rowClicks.firstClick = true;
       rowClicks.secondClick = true;
     }
-    onRowClicked?.(row);
-
     setMarkSelectedRow((prev) => {
       const newMarkSelectedRow = {};
       Object.keys(prev).forEach((rowId) => {
@@ -80,6 +78,8 @@ const TableComponent = ({
       newMarkSelectedRow[row.id] = rowClicks;
       return newMarkSelectedRow;
     });
+
+    onRowClicked?.(row);
   }
 
   function getDailyScoreColor(row, columnName) {
@@ -350,12 +350,12 @@ const TableComponent = ({
           <tbody>
             {selectedRowsOrdered.map((row) => (
               <tr
-                onClick={(event) => onRowClickedHandler(row)}
+                onClick={() => onRowClickedHandler(row)}
                 tabIndex={0}
                 className={`${
-                  markSelectedRow[row.id].firstClick ? "selected-first" : ""
+                  markSelectedRow[row.id]?.firstClick ? "selected-first" : ""
                 } ${
-                  markSelectedRow[row.id].secondClick ? "selected-second" : ""
+                  markSelectedRow[row.id]?.secondClick ? "selected-second" : ""
                 }`}
               >
                 {renderRow(row)}
