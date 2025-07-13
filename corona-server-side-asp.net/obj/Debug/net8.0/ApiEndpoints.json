@@ -415,5 +415,21 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "corona_server_side_asp.net.Controllers.UsersController",
+    "Method": "Login",
+    "RelativePath": "api/Users/login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userDto",
+        "Type": "corona_server_side_asp.net.Dto.LoginDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   }
 ]

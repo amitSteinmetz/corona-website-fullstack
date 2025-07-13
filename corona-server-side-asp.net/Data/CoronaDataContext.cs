@@ -1,12 +1,13 @@
 ﻿using corona_server_side_asp.net.Models;
 using corona_server_side_asp.net.Models.Cards;
 using corona_server_side_asp.net.Models.Tables;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace corona_server_side_asp.net.Data
 {
-    public class CoronaDataContext : IdentityDbContext
+    public class CoronaDataContext : IdentityDbContext<IdentityUser>
     {
         public CoronaDataContext(DbContextOptions<CoronaDataContext> options) : base(options) { }
         public DbSet<SectionModel> Sections { get; set; }
