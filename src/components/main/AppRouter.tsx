@@ -21,7 +21,7 @@ function AppRouter() {
         <Routes>
           <Route path="/" element={<Navigate to="/home" />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/admin" element={<AdminLogin />} />{" "}
+          <Route path="/admin" element={<AdminLogin />} />
           <Route
             path="/admin/control-center"
             element={<AdminControlCenter />}

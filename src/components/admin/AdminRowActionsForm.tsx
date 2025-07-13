@@ -36,16 +36,6 @@ const AdminRowActionsForm = ({
     } else return {};
   }
 
-  function initAllowEditField() {
-    if (action === "edit" && currentRow) {
-      const initialData = {};
-      columns.forEach((column) => {
-        initialData[column.key] = false;
-      });
-      return initialData;
-    }
-  }
-
   function onChangeInput(event) {
     const { name, value } = event.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
