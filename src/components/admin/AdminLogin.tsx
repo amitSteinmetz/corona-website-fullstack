@@ -30,7 +30,10 @@ const AdminLogin = () => {
         body: JSON.stringify(loginDetails),
       });
       const response: LoggedUser = await res.json();
+
       localStorage.setItem("token", response.token);
+      localStorage.setItem("expireTime", response.expireTime);
+
       navigate("/admin/control-center");
       console.log("Response from loginAction:", response);
     } catch (err) {

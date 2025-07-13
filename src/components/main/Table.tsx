@@ -9,6 +9,7 @@ import {
 import MoreActionsButton from "./MoreActionsButton";
 import { useEffect, useState } from "react";
 import ColorMap from "./ColorMap";
+import { FaSearch } from "react-icons/fa";
 
 const TableComponent = ({
   table,
@@ -23,6 +24,11 @@ const TableComponent = ({
     | TrafficLightProgramItem[]
   >(table.rows);
   const [selectedRowsOrdered, setSelectedRowsOrdered] = useState<
+    | HospitalBedOccupancyItem[]
+    | IncomingPersonsItem[]
+    | TrafficLightProgramItem[]
+  >(table.rows);
+  const [filteredRows, setFilteredRows] = useState<
     | HospitalBedOccupancyItem[]
     | IncomingPersonsItem[]
     | TrafficLightProgramItem[]
@@ -102,7 +108,7 @@ const TableComponent = ({
     return Math.round(num * 100) / 100;
   }
 
-  function getRowKey(row) {
+  function getRowKey(row): string {
     if (table.type === "incomingPersons") {
       return (row as IncomingPersonsItem).srcCountry;
     } else if (table.type === "hospitalBedOccupancy") {
@@ -240,6 +246,24 @@ const TableComponent = ({
         | IncomingPersonsItem[]
         | TrafficLightProgramItem[]
     );
+    setShowTableFilterList(false);
+  }
+
+  function onChangeSearchBoxInput(event) {
+    const filteredData = (
+      table.rows as (
+        | HospitalBedOccupancyItem
+        | IncomingPersonsItem
+        | TrafficLightProgramItem
+      )[]
+    ).filter((row) => getRowKey(row).includes(event.target.value));
+
+    setFilteredRows(
+      filteredData as
+        | HospitalBedOccupancyItem[]
+        | IncomingPersonsItem[]
+        | TrafficLightProgramItem[]
+    );
   }
 
   return (
@@ -293,8 +317,20 @@ const TableComponent = ({
               </button>
             </div>
 
+            <div className="table-filter__list-search-container">
+              <input
+                type="text"
+                onChange={onChangeSearchBoxInput}
+                placeholder={`חפש ${getFilterPlaceholder()}`}
+                className="table-filter__list-search-box"
+              />
+              <div className="search-icon">
+                <FaSearch />
+              </div>
+            </div>
+
             <div className="table-filter__list-rows">
-              {table.rows.map((row) => (
+              {filteredRows.map((row) => (
                 <div className="table-filter__list-rows__item">
                   <input
                     type="checkbox"
@@ -308,8 +344,20 @@ const TableComponent = ({
             </div>
 
             <div className="table-filter__list-buttons">
-              <button onClick={onSubmitFilteredRows}>אישור</button>
-              <button onClick={() => setShowTableFilterList(false)}>
+              <button
+                onClick={() => {
+                  onSubmitFilteredRows();
+                  setFilteredRows(table.rows);
+                }}
+              >
+                אישור
+              </button>
+              <button
+                onClick={() => {
+                  setShowTableFilterList(false);
+                  setFilteredRows(table.rows);
+                }}
+              >
                 ביטול
               </button>
             </div>

@@ -5,6 +5,7 @@ import { ThemeContext } from "../../contexts/ThemeContext";
 import Home from "../Home";
 import AdminLogin from "../admin/AdminLogin";
 import AdminControlCenter from "../admin/AdminControlCenter";
+import ProtectedRoute from "../../routers/ProtectedRoute";
 
 function AppRouter() {
   const { theme } = useContext(ThemeContext);
@@ -24,7 +25,7 @@ function AppRouter() {
           <Route path="/admin" element={<AdminLogin />} />
           <Route
             path="/admin/control-center"
-            element={<AdminControlCenter />}
+            element={<ProtectedRoute children={<AdminControlCenter />} />}
           />
           {/* <Route path="*" element={<Navigate to="/page-not-found" />} /> */}
         </Routes>

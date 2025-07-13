@@ -150,18 +150,24 @@
     }
   }
 
-  .row-successful-action-modal {
+  .row-action-modal {
     position: fixed;
     z-index: 100;
     top: 75px;
     left: 40px;
-    background-color: green;
     color: white;
     font-size: 1.2rem;
     padding: 1rem;
     border-radius: 5px;
     animation: fadeIn 1s ease-in-out;
   }
+}
+
+.successful-action {
+  background-color: green;
+}
+.bad-action {
+  background-color: red;
 }
 
 @media (min-width: 500px) {

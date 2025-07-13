@@ -6,7 +6,6 @@ import TableComponent from "../main/Table";
 import { IoMdAdd } from "react-icons/io";
 import { MdClose } from "react-icons/md";
 
-
 const AdminControlCenter = () => {
   const { sections, sectionsDispatch } = useContext(DataContext);
   const [chosenSectionId, setChosenSectionId] = useState<number | null>(null);
@@ -14,17 +13,23 @@ const AdminControlCenter = () => {
   const [chosenRowId, setChosenRowId] = useState<number | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [showAddRowForm, setRowActionForm] = useState(false);
-  const [showRowSuccessfulActionModal, setShowRowSuccessfulActionModal] = useState(false);
+  const [rowActionStatus, setRowActionStatus] = useState({
+    success: false,
+    error: false,
+  });
   const [rowAction, setRowAction] = useState("");
 
   const chosenSection = sections.find((s) => s.id === chosenSectionId);
   const chosenTable = chosenSection?.tables.find((t) => t.id === chosenTableId);
   const chosenRow = chosenTable?.rows.find((r) => r.id === chosenRowId);
 
-  function displayDeletedRowModal() {
-    setShowRowSuccessfulActionModal(true);
+  function displayDeletedRowModal(actionStatus: string) {
+    setRowActionStatus({ ...rowActionStatus, [actionStatus]: true });
     setTimeout(() => {
-      setShowRowSuccessfulActionModal(false);
+      setRowActionStatus({
+        ...rowActionStatus,
+        [actionStatus]: false,
+      });
     }, 4000);
   }
 
@@ -34,15 +39,19 @@ const AdminControlCenter = () => {
     setRowAction(action);
   }
 
-  function onDeleteRowButtonClicked() {
+  async function onDeleteRowButtonClicked() {
     setShowModal(false);
-    displayDeletedRowModal();
-    deleteRowAction(
-      sectionsDispatch,
-      chosenSectionId,
-      chosenTableId,
-      chosenRowId
-    );
+    try {
+      await deleteRowAction(
+        sectionsDispatch,
+        chosenSectionId,
+        chosenTableId,
+        chosenRowId
+      );
+      displayDeletedRowModal("success");
+    } catch (err) {
+      displayDeletedRowModal("error");
+    }
   }
 
   const handleRowClick = (row) => {
@@ -179,9 +188,15 @@ const AdminControlCenter = () => {
         />
       )}
 
-      {showRowSuccessfulActionModal && (
-        <div className="row-successful-action-modal">
+      {rowActionStatus.success && (
+        <div className="row-action-modal successful-action">
           <span className="bold">רשומה נמחקה בהצלחה!</span>
+        </div>
+      )}
+
+      {rowActionStatus.error && (
+        <div className="row-action-modal bad-action">
+          <span className="bold">מחיקת רשומה נכשלה</span>
         </div>
       )}
     </div>

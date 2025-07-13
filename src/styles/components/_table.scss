@@ -40,11 +40,31 @@
       z-index: 100;
       background-color: white;
       width: 220px;
-      height: 250px;
+      height: 340px;
       border-radius: 15px;
       box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
       padding: 0.2rem 0.7rem 0 0.7rem;
       animation: fade 0.2s linear;
+
+      .table-filter__list-search-container {
+        position: relative;
+        margin: 0.5rem 0 0.2rem;
+
+        .table-filter__list-search-box {
+          display: block;
+          width: 90%;
+          padding: 0.2rem;
+          border-radius: 5px;
+          border: 1px solid $darkBlueBackground;
+        }
+
+        .search-icon {
+          position: absolute;
+          top: 5px;
+          left: 27px;
+          font-size: 0.9rem;
+        }
+      }
 
       .table-filter__list-rows {
         width: 100%;
@@ -105,7 +125,7 @@
       tbody td,
       thead th {
         padding: 8px 4px;
-        font-size: 0.8rem;
+        font-size: 0.7rem;
       }
 
       .row-percentageNumber-field {
