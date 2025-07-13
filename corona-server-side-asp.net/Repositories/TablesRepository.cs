@@ -145,7 +145,7 @@ namespace corona_server_side_asp.net.Repositories
 
                 await _context.Entry(incomingPersonsTable).Collection(tt => tt.Rows).LoadAsync();
 
-                var existingRow = incomingPersonsTable.Rows.FirstOrDefault(r => r.Id == rowId);
+                IncomingPersonsItem? existingRow = incomingPersonsTable.Rows.FirstOrDefault(r => r.Id == rowId);
                 if (existingRow == null) throw new ArgumentException("Row not found in the IncomingPersonsTable");
 
                 existingRow.RiskLevel = incomingPersonsRow.RiskLevel;
@@ -153,6 +153,8 @@ namespace corona_server_side_asp.net.Repositories
                 existingRow.TotalAmount = incomingPersonsRow.TotalAmount;
                 existingRow.VerifiedCitizensAmount = incomingPersonsRow.VerifiedCitizensAmount;
                 existingRow.VerifiedStrangersAmount = incomingPersonsRow.VerifiedStrangersAmount;
+                //existingRow.TotalVerifiedPercentage =
+                //((incomingPersonsRow.VerifiedCitizensAmount + incomingPersonsRow.VerifiedStrangersAmount) * 100) / incomingPersonsRow.TotalAmount;
             }
             else if (table is HospitalBedOccupancyTable hospitalBedOccupancyTable)
             {

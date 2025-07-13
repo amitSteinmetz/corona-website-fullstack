@@ -1,5 +1,6 @@
 ﻿using corona_server_side_asp.net.IRepositories;
 using corona_server_side_asp.net.Models.Tables;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +8,7 @@ namespace corona_server_side_asp.net.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class TablesController : ControllerBase
     {
         private readonly ITablesRepository _tablesRepository;

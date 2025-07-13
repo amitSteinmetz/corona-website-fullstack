@@ -37,7 +37,7 @@ namespace corona_server_side_asp.net.Helpers
             }
         }
 
-        public static async Task<string> GenerateToken(UserManager<IdentityUser> userManager, IdentityUser user, IConfiguration config)
+        public static async Task<JwtSecurityToken> GenerateToken(UserManager<IdentityUser> userManager, IdentityUser user, IConfiguration config)
         {
             var roles = await userManager.GetRolesAsync(user);
 
@@ -58,8 +58,8 @@ namespace corona_server_side_asp.net.Helpers
                 expires: DateTime.UtcNow.AddHours(2),
                 signingCredentials: credentials
                 );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            
+            return token;
         }
     }
 }

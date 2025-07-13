@@ -2,6 +2,8 @@
 using corona_server_side_asp.net.Helpers;
 using corona_server_side_asp.net.IRepositories;
 using Microsoft.AspNetCore.Identity;
+using OfficeOpenXml.FormulaParsing.LexicalAnalysis;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace corona_server_side_asp.net.Repositories
 {
@@ -26,11 +28,12 @@ namespace corona_server_side_asp.net.Repositories
             var result = await _signInManager.PasswordSignInAsync(user, userDto.Password, false, false);
             if (!result.Succeeded) return null;
 
-            var token = await UserUtils.GenerateToken(_userManager, user, _config);
+            var jwtToken = await UserUtils.GenerateToken(_userManager, user, _config);
 
             return new LoggedUserDto
             {
-                Token = token
+                Token = new JwtSecurityTokenHandler().WriteToken(jwtToken),
+                ExpireTime = jwtToken.ValidTo
             };
         }
     }

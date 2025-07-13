@@ -3,6 +3,6 @@
     public class LoggedUserDto
     {
         public string Token { get; set; }
-        //public DateTime Expiration { get; set; }
+        public DateTime ExpireTime { get; set; }
     }
 }
