@@ -11,8 +11,10 @@ namespace corona_server_side_asp.net.Models.Cards
     {
         public int Id { get; set; }
         public string Title { get; set; }
+        public string TitleEnglish { get; set; }
         public string Type { get; set; }
         public string ExcelFileName { get; set; } = "";
+        public string ExcelFileNameEnglish { get; set; } = "";
         public string Description { get; set; }
     }
 }

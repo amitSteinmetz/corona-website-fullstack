@@ -883,11 +883,19 @@
             "type": "string",
             "nullable": true
           },
+          "titleEnglish": {
+            "type": "string",
+            "nullable": true
+          },
           "type": {
             "type": "string",
             "nullable": true
           },
           "excelFileName": {
+            "type": "string",
+            "nullable": true
+          },
+          "excelFileNameEnglish": {
             "type": "string",
             "nullable": true
           },
@@ -906,6 +914,10 @@
             "format": "int32"
           },
           "hospitalName": {
+            "type": "string",
+            "nullable": true
+          },
+          "hospitalNameEnglish": {
             "type": "string",
             "nullable": true
           },
@@ -928,6 +940,10 @@
             "format": "int32"
           },
           "srcCountry": {
+            "type": "string",
+            "nullable": true
+          },
+          "srcCountryEnglish": {
             "type": "string",
             "nullable": true
           },
@@ -962,7 +978,7 @@
             "type": "integer",
             "format": "int32"
           },
-          "name": {
+          "shortenUrl": {
             "type": "string",
             "nullable": true
           },
@@ -975,6 +991,14 @@
             "nullable": true
           },
           "subTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "titleEngilsh": {
+            "type": "string",
+            "nullable": true
+          },
+          "subTitleEnglish": {
             "type": "string",
             "nullable": true
           }
@@ -1003,6 +1027,10 @@
             "format": "int32"
           },
           "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "titleEnglish": {
             "type": "string",
             "nullable": true
           },
@@ -1045,6 +1073,10 @@
             "type": "string",
             "nullable": true
           },
+          "valueEnglish": {
+            "type": "string",
+            "nullable": true
+          },
           "inPercentages": {
             "type": "boolean"
           }
@@ -1062,11 +1094,19 @@
             "type": "string",
             "nullable": true
           },
+          "titleEnglish": {
+            "type": "string",
+            "nullable": true
+          },
           "type": {
             "type": "string",
             "nullable": true
           },
           "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "descriptionEnglish": {
             "type": "string",
             "nullable": true
           },
@@ -1091,13 +1131,17 @@
             "type": "string",
             "nullable": true
           },
+          "cityEnglish": {
+            "type": "string",
+            "nullable": true
+          },
           "dailyScore": {
             "type": "number",
             "format": "double"
           },
           "newPatientsPer10000People": {
-            "type": "string",
-            "nullable": true
+            "type": "number",
+            "format": "double"
           },
           "positiveTestsPercentage": {
             "type": "number",
