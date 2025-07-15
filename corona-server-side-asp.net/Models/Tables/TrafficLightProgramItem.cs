@@ -3,8 +3,8 @@
     public class TrafficLightProgramItem 
     {
         public int Id { get; set; }
-        public string City { get; set; }
-        public string CityEnglish { get; set; }
+        public string? City { get; set; }
+        public string? CityEnglish { get; set; }
         public double DailyScore { get; set; }
         public double NewPatientsPer10000People { get; set; }
         public double PositiveTestsPercentage { get; set; }

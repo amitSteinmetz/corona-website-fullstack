@@ -24,7 +24,7 @@ namespace corona_server_side_asp.net.Helpers
                 var headers = new List<string>();
                 for (int col = 1; col <= colCount; col++)
                 {
-                    headers.Add(worksheet.Cells[1, col].Text.Trim().ToLower());
+                    headers.Add(worksheet.Cells[1, col].Text.Trim());
                 }
 
                 // Read rows

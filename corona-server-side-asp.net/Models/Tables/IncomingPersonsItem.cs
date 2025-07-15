@@ -3,8 +3,8 @@
     public class IncomingPersonsItem
     {
         public int Id { get; set; }
-        public string SrcCountry { get; set; }
-        public string SrcCountryEnglish { get; set; }
+        public string? SrcCountry { get; set; }
+        public string? SrcCountryEnglish { get; set; }
         public string RiskLevel { get; set; }
         public int TotalAmount { get; set; }
         public int VerifiedCitizensAmount { get; set; }

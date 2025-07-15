@@ -7,5 +7,6 @@ namespace corona_server_side_asp.net.IRepositories
         Task<int> AddSectionAsync(SectionModel section);
         Task<List<SectionModel>> GetSectionsAsync();
         Task<int> AddLinksToSection(int sectionId, List<LinkModel> links);
+        Task AddTitleAndSubtitleEnglishToLink(int sectionId, int linkId, string titleEnglish, string subtitleEnglish);
     }
 }

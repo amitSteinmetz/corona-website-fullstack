@@ -1,10 +1,12 @@
-﻿using corona_server_side_asp.net.Models;
+﻿using corona_server_side_asp.net.Dto;
+using corona_server_side_asp.net.Models;
 using corona_server_side_asp.net.Models.Cards;
 
 namespace corona_server_side_asp.net.IRepositories
 {
     public interface ICardsRepository
     {
+        Task AddEnglishPropsToCard(int sectionId, int cardId, CardEnglishProps englishProps);
         Task<int> AddCardToSectionAsync(int sectionId, CardModel card);
         Task<List<CardModel>> GetSectionCardsAsync(int sectionId);
         Task<int> AddChildToContainerCard(int sectionId, int containerCardId, CardModel card);

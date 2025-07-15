@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Nodes;
 using System.Text.Json;
 using Microsoft.AspNetCore.JsonPatch.Internal;
+using corona_server_side_asp.net.Dto;
 
 namespace corona_server_side_asp.net.Repositories
 {
@@ -20,6 +21,19 @@ namespace corona_server_side_asp.net.Repositories
         {
             _context = context;
             _env = env;
+        }
+
+        public async Task AddEnglishPropsToCard(int sectionId, int cardId, CardEnglishProps englishProps)
+        {
+            var section = await _context.Sections.Include(s => s.Cards).FirstOrDefaultAsync(s => s.Id == sectionId);
+            if (section == null) throw new Exception("Section not found");
+
+            var card = section.Cards.Find(s => s.Id == cardId);
+            if (card == null) throw new Exception("Card not found");
+
+            card.TitleEnglish = englishProps.TitleEnglish;
+            card.DescriptionEnglish = englishProps.DescriptionEnglish;
+            await _context.SaveChangesAsync();
         }
 
         public async Task<List<CardModel>> GetSectionCardsAsync(int sectionId)
@@ -118,8 +132,10 @@ namespace corona_server_side_asp.net.Repositories
                 else if (card is GraphicalCardModel graphicalCard)
                 {
                     var optionsNode = JsonNode.Parse(graphicalCard.Options);
+                    var optionsEnglishNode = JsonNode.Parse(graphicalCard.OptionsEnglish);
+
                     graphicalCard.Options = GetGraphicalCardOptionsFromExcelFile(optionsNode, parsedData);
-                    graphicalCard.OptionsEnglish = GetGraphicalCardOptionsFromExcelFile(optionsNode, parsedData);
+                    graphicalCard.OptionsEnglish = GetGraphicalCardOptionsFromExcelFile(optionsEnglishNode, parsedData);
                 }
             }
             else if (card is ContainerCardModel containerCard && containerCard.Children != null)

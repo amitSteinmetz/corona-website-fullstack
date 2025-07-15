@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using corona_server_side_asp.net.Data;
 
@@ -11,9 +12,11 @@ using corona_server_side_asp.net.Data;
 namespace corona_server_side_asp.net.Migrations
 {
     [DbContext(typeof(CoronaDataContext))]
-    partial class CoronaDataContextModelSnapshot : ModelSnapshot
+    [Migration("20250715060102_added descriptionEnglish from cardModel")]
+    partial class addeddescriptionEnglishfromcardModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -327,7 +330,7 @@ namespace corona_server_side_asp.net.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TitleEnglish")
+                    b.Property<string>("TitleEngilsh")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Url")
@@ -376,9 +379,11 @@ namespace corona_server_side_asp.net.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("HospitalName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("HospitalNameEnglish")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("InternalDepartmentBedOccupancy")
@@ -407,9 +412,11 @@ namespace corona_server_side_asp.net.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SrcCountry")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SrcCountryEnglish")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TotalAmount")
@@ -445,10 +452,6 @@ namespace corona_server_side_asp.net.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Key")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("KeyEnglish")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -529,9 +532,11 @@ namespace corona_server_side_asp.net.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("City")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CityEnglish")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("DailyScore")

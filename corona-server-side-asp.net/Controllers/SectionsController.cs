@@ -1,4 +1,5 @@
-﻿using corona_server_side_asp.net.IRepositories;
+﻿using corona_server_side_asp.net.Dto;
+using corona_server_side_asp.net.IRepositories;
 using corona_server_side_asp.net.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -39,6 +40,22 @@ namespace corona_server_side_asp.net.Controllers
 
             var result = await _sectionsRepository.AddLinksToSection(sectionId, links);
             return (result != -1) ? Ok("Links added successfully.") : NotFound("Section not found.");
+        }
+
+        [HttpPatch("add-title-english/{sectionId}/{linkId}")]
+        public async Task<IActionResult> AddTitleAndSubtitleEnglishToLink(int sectionId, int linkId,
+            [FromBody] LinkTitles titlesEnglish)
+        {
+            if (sectionId <= 0) return BadRequest("sectionId not valid");
+            try
+            {
+                await _sectionsRepository.AddTitleAndSubtitleEnglishToLink(sectionId, linkId, titlesEnglish.TitleEnglish, titlesEnglish.SubtitleEnglish);
+                return Ok("Title english added successfully");
+            }
+            catch (Exception ex)
+            {
+                return NotFound("Section Not found");
+            }
         }
     }
 }

@@ -5,6 +5,62 @@
     "version": "1.0"
   },
   "paths": {
+    "/api/Cards/add-english-props/{sectionId}/{cardId}": {
+      "patch": {
+        "tags": [
+          "Cards"
+        ],
+        "parameters": [
+          {
+            "name": "sectionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "cardId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CardEnglishProps"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CardEnglishProps"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CardEnglishProps"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CardEnglishProps"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Cards/{sectionId}": {
       "post": {
         "tags": [
@@ -309,6 +365,62 @@
                 "items": {
                   "$ref": "#/components/schemas/LinkModel"
                 }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Sections/add-title-english/{sectionId}/{linkId}": {
+      "patch": {
+        "tags": [
+          "Sections"
+        ],
+        "parameters": [
+          {
+            "name": "sectionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "linkId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LinkTitles"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LinkTitles"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LinkTitles"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LinkTitles"
               }
             }
           }
@@ -872,6 +984,20 @@
   },
   "components": {
     "schemas": {
+      "CardEnglishProps": {
+        "type": "object",
+        "properties": {
+          "titleEnglish": {
+            "type": "string",
+            "nullable": true
+          },
+          "descriptionEnglish": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "CardModel": {
         "type": "object",
         "properties": {
@@ -895,11 +1021,11 @@
             "type": "string",
             "nullable": true
           },
-          "excelFileNameEnglish": {
+          "description": {
             "type": "string",
             "nullable": true
           },
-          "description": {
+          "descriptionEnglish": {
             "type": "string",
             "nullable": true
           }
@@ -994,11 +1120,25 @@
             "type": "string",
             "nullable": true
           },
-          "titleEngilsh": {
+          "titleEnglish": {
             "type": "string",
             "nullable": true
           },
           "subTitleEnglish": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LinkTitles": {
+        "type": "object",
+        "properties": {
+          "titleEnglish": {
+            "type": "string",
+            "nullable": true
+          },
+          "subtitleEnglish": {
             "type": "string",
             "nullable": true
           }
@@ -1066,6 +1206,10 @@
             "format": "int32"
           },
           "key": {
+            "type": "string",
+            "nullable": true
+          },
+          "keyEnglish": {
             "type": "string",
             "nullable": true
           },

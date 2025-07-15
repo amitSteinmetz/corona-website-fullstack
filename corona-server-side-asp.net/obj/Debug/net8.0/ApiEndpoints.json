@@ -110,6 +110,32 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "corona_server_side_asp.net.Controllers.CardsController",
+    "Method": "AddEnglishPropsToCard",
+    "RelativePath": "api/Cards/add-english-props/{sectionId}/{cardId}",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "sectionId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "cardId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "englishProps",
+        "Type": "corona_server_side_asp.net.Dto.CardEnglishProps",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "corona_server_side_asp.net.Controllers.SectionsController",
     "Method": "GetSections",
     "RelativePath": "api/Sections",
@@ -151,6 +177,32 @@
       {
         "Name": "links",
         "Type": "System.Collections.Generic.List\u00601[[corona_server_side_asp.net.Models.LinkModel, corona-server-side-asp.net, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "corona_server_side_asp.net.Controllers.SectionsController",
+    "Method": "AddTitleAndSubtitleEnglishToLink",
+    "RelativePath": "api/Sections/add-title-english/{sectionId}/{linkId}",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "sectionId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "linkId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "titlesEnglish",
+        "Type": "corona_server_side_asp.net.Dto.LinkTitles",
         "IsRequired": true
       }
     ],

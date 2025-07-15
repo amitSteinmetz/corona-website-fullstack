@@ -1,4 +1,5 @@
-﻿using corona_server_side_asp.net.IRepositories;
+﻿using corona_server_side_asp.net.Dto;
+using corona_server_side_asp.net.IRepositories;
 using corona_server_side_asp.net.Models.Cards;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -17,6 +18,21 @@ namespace corona_server_side_asp.net.Controllers
         {
             _cardsRepository = cardsRepository;
             _env = env;
+        }
+
+        [HttpPatch("add-english-props/{sectionId}/{cardId}")]
+        public async Task<IActionResult> AddEnglishPropsToCard(int sectionId, int cardId, [FromBody] CardEnglishProps englishProps)
+        {
+            if (sectionId <= 0 || cardId <= 0) return BadRequest("Invalid section or card id");
+
+            try
+            {
+                await _cardsRepository.AddEnglishPropsToCard(sectionId, cardId, englishProps);
+                return Ok("Ensligh props added to card successfully");
+            } catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpPost("{sectionId}")]

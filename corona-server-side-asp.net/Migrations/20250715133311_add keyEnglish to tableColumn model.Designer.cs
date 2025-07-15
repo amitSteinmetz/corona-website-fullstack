@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using corona_server_side_asp.net.Data;
 
@@ -11,9 +12,11 @@ using corona_server_side_asp.net.Data;
 namespace corona_server_side_asp.net.Migrations
 {
     [DbContext(typeof(CoronaDataContext))]
-    partial class CoronaDataContextModelSnapshot : ModelSnapshot
+    [Migration("20250715133311_add keyEnglish to tableColumn model")]
+    partial class addkeyEnglishtotableColumnmodel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -376,9 +379,11 @@ namespace corona_server_side_asp.net.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("HospitalName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("HospitalNameEnglish")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("InternalDepartmentBedOccupancy")
@@ -407,9 +412,11 @@ namespace corona_server_side_asp.net.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SrcCountry")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SrcCountryEnglish")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TotalAmount")
@@ -529,9 +536,11 @@ namespace corona_server_side_asp.net.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("City")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CityEnglish")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("DailyScore")

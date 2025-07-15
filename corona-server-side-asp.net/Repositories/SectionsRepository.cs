@@ -52,6 +52,20 @@ namespace corona_server_side_asp.net.Repositories
             return await _context.SaveChangesAsync();
         }
 
+        public async Task AddTitleAndSubtitleEnglishToLink(int sectionId, int linkId, string titleEnglish, string subtitleEnglish)
+        {
+            var section = await _context.Sections.Include(s => s.RelatedLinks).FirstOrDefaultAsync(s => s.Id == sectionId);
+            if (section == null) throw new Exception("Section not found");
+
+            var link = section.RelatedLinks.Find(l => l.Id == linkId);
+            if (link == null) throw new Exception("Link not found");
+
+            link.TitleEnglish = titleEnglish;
+            if (subtitleEnglish != null) link.SubTitleEnglish = subtitleEnglish;
+
+            await _context.SaveChangesAsync();
+        }
+
         private async Task LoadExtraCardData(CardModel card)
         {
             switch (card)
