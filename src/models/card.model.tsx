@@ -1,8 +1,10 @@
 export interface CardModel {
   id: number;
   title: string;
-  type: string; // this will act as the "discriminator"
+  titleEnglish: string;
+  type: string;
   description: string;
+  descriptionEnglish: string;
 }
 
 export interface TextualCardModel extends CardModel {
@@ -11,6 +13,7 @@ export interface TextualCardModel extends CardModel {
 
 export interface GraphicalCardModel extends CardModel {
   options: string;
+  optionsEnglish: string;
   hasTimeRangeFilter: boolean;
 }
 
@@ -21,6 +24,7 @@ export interface ContainerCardModel extends CardModel {
 export interface CardTextDataModel {
   amount: string;
   text: string;
+  textEnglish: string;
 }
 
 export type Card = TextualCardModel | GraphicalCardModel | ContainerCardModel;

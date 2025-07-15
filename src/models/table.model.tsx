@@ -1,15 +1,19 @@
 export interface TableModel {
   id: number;
   title: string;
+  titleEnglish: string;
   type: string; // this will act as the "discriminator"
   description: string;
+  descriptionEnglish: string;
   columns: TableColumn[];
 }
 
 export interface TableColumn {
   id: number;
   key: string;
+  keyEnglish: string;
   value: string;
+  valueEnglish: string;
   inPercentages: boolean;
 }
 
@@ -28,6 +32,7 @@ export interface TrafficLightProgramTable extends TableModel {
 export interface HospitalBedOccupancyItem {
   id: number;
   hospitalName: string;
+  hospitalNameEnglish: string;
   generalBedOccupancy: number;
   internalDepartmentBedOccupancy: number;
 }
@@ -35,6 +40,7 @@ export interface HospitalBedOccupancyItem {
 export interface IncomingPersonsItem {
   id: number;
   srcCountry: string;
+  srcCountryEnglish: string;
   riskLevel: string;
   TotalAmount: number;
   VerifiedCitizensAmount: number;
@@ -45,6 +51,7 @@ export interface IncomingPersonsItem {
 export interface TrafficLightProgramItem {
   id: number;
   city: string;
+  cityEnglish: string;
   dailyScore: number;
   newPatientsPer10000People: number;
   positiveTestsPercentage: number;

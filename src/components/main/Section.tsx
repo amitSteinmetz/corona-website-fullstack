@@ -1,14 +1,16 @@
 import CardRenderer from "./cards/CardRenderer";
 import { SectionModel } from "../../models/section.model";
 import { GoTriangleDown, GoTriangleUp } from "react-icons/go";
-import { useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import webIcon from "../../assets/images/web-icon.png";
 import { Card } from "../../models/card.model";
-import { Table } from "../../models/table.model";
 import TableComponent from "./Table";
+import { languageContext } from "../../contexts/LanguageContext";
 
 const Section = ({ sectionData }: { sectionData: SectionModel }) => {
   const [showSectionLinks, setShowSectionLinks] = useState(false);
+  const { language } = useContext(languageContext);
+  const englishMode: boolean = language === "english";
 
   function renderCards(arr: Card[]) {
     if (arr.length === 0) return null;
@@ -34,7 +36,9 @@ const Section = ({ sectionData }: { sectionData: SectionModel }) => {
       }`}
     >
       <div className="section-container__header">
-        <h1 className="section-header__title font-xl">{sectionData.title}</h1>
+        <h1 className="section-header__title font-xl">
+          {!englishMode ? sectionData.title : sectionData.titleEnglish}
+        </h1>
 
         {sectionData.relatedLinks.length > 0 && (
           <div
@@ -49,7 +53,7 @@ const Section = ({ sectionData }: { sectionData: SectionModel }) => {
                 showSectionLinks ? "bold" : ""
               }`}
             >
-              לינקים בנושא
+              {!englishMode ? "לינקים בנושא" : "subject links"}
             </span>
 
             {showSectionLinks ? (
@@ -62,10 +66,6 @@ const Section = ({ sectionData }: { sectionData: SectionModel }) => {
                 <div className="subtitle__links">
                   <div className="subtitle__links_line-symbol"></div>
 
-                  <div className="subtitle__links_title bold font-base">
-                    לינקים בנושא
-                  </div>
-
                   {sectionData.relatedLinks.map((link) => (
                     <div
                       className={`links__item ${link.id === 1 && "first-link"}`}
@@ -74,13 +74,13 @@ const Section = ({ sectionData }: { sectionData: SectionModel }) => {
 
                       <div className="links__item_content">
                         <div className="links__item_title bold font-sm">
-                          {link.title}
+                          {englishMode ? link.titleEnglish : link.title}
                         </div>
                         <div className="links__item_subtitle font-xs">
-                          {link.subTitle}
+                          {englishMode ? link.subTitleEnglish : link.subTitle}
                         </div>
                         <a href={link.url} className="links__item_url font-xs">
-                          {link.name}
+                          {link.shortenUrl}
                         </a>
                       </div>
                     </div>

@@ -6,9 +6,12 @@ import {
   hamburgerBtn,
 } from "../../assets/svgs";
 import { ThemeContext } from "../../contexts/ThemeContext";
+import { languageContext } from "../../contexts/LanguageContext";
 
 const Header = () => {
   const { theme, toggleTheme } = useContext(ThemeContext);
+  const { language, toggleLanguage } = useContext(languageContext);
+  const englishMode = language === "english";
   const [isGradientLineLoadingAnimate, setIsGradientLineLoadingAnimate] =
     useState(false);
 
@@ -33,10 +36,18 @@ const Header = () => {
 
         <img className="header__logo" src={logo} alt="לוגו משרד הבריאות" />
 
-        <div className="header__title">עולם הדאטה</div>
+        <div
+          className="header__title"
+          data-title-after={!englishMode ? " של משרד הבריאות" : ""}
+          data-title-before={
+            language === "english" ? "Ministry of Health's " : ""
+          }
+        >
+          {!englishMode ? "עולם הדאטה" : "World of Data"}
+        </div>
 
         <div className="header__icons">
-          <button>
+          <button onClick={toggleLanguage}>
             <img
               className="change-language-icon"
               src={changeLanguageBtn}

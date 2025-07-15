@@ -5,25 +5,27 @@ import AdminRowActionsForm from "./AdminRowActionsForm";
 import TableComponent from "../main/Table";
 import { IoMdAdd } from "react-icons/io";
 import { MdClose } from "react-icons/md";
+import { languageContext } from "../../contexts/LanguageContext";
 
 const AdminControlCenter = () => {
+  const { language } = useContext(languageContext);
+  const englishMode = language === "english";
   const { sections, sectionsDispatch } = useContext(DataContext);
   const [chosenSectionId, setChosenSectionId] = useState<number | null>(null);
   const [chosenTableId, setChosenTableId] = useState<number | null>(null);
   const [chosenRowId, setChosenRowId] = useState<number | null>(null);
-  const [showModal, setShowModal] = useState(false);
+  const [showActionsModal, setShowActionsModal] = useState(false);
   const [showAddRowForm, setRowActionForm] = useState(false);
   const [rowActionStatus, setRowActionStatus] = useState({
     success: false,
     error: false,
   });
   const [rowAction, setRowAction] = useState("");
-
   const chosenSection = sections.find((s) => s.id === chosenSectionId);
   const chosenTable = chosenSection?.tables.find((t) => t.id === chosenTableId);
   const chosenRow = chosenTable?.rows.find((r) => r.id === chosenRowId);
 
-  function displayDeletedRowModal(actionStatus: string) {
+  function showApplyRowActionModal(actionStatus: string) {
     setRowActionStatus({ ...rowActionStatus, [actionStatus]: true });
     setTimeout(() => {
       setRowActionStatus({
@@ -32,15 +34,13 @@ const AdminControlCenter = () => {
       });
     }, 4000);
   }
-
   function onActionRowButtonClicked(action: string) {
     setRowActionForm(true);
-    setShowModal(false);
+    setShowActionsModal(false);
     setRowAction(action);
   }
-
   async function onDeleteRowButtonClicked() {
-    setShowModal(false);
+    setShowActionsModal(false);
     try {
       await deleteRowAction(
         sectionsDispatch,
@@ -48,20 +48,19 @@ const AdminControlCenter = () => {
         chosenTableId,
         chosenRowId
       );
-      displayDeletedRowModal("success");
+      showApplyRowActionModal("success");
     } catch (err) {
-      displayDeletedRowModal("error");
+      showApplyRowActionModal("error");
     }
   }
-
   const handleRowClick = (row) => {
     if (chosenRow === row) {
-      if (showModal) {
-        setShowModal(false);
+      if (showActionsModal) {
+        setShowActionsModal(false);
         setChosenRowId(null);
-      } else setShowModal(true);
+      } else setShowActionsModal(true);
     } else {
-      setShowModal(false);
+      setShowActionsModal(false);
       setChosenRowId(row.id);
     }
   };
@@ -74,7 +73,7 @@ const AdminControlCenter = () => {
         <div className="admin-control-center__selection-container">
           <div className="admin-control-center__selection-box">
             <div className="admin-control-center__selection-box__title bold">
-              בחר מחלקה
+              {englishMode ? "Choose Section" : "בחר מחלקה"}
             </div>
 
             <div className="admin-control-center__selection-box__options">
@@ -93,7 +92,7 @@ const AdminControlCenter = () => {
                           setRowActionForm(false);
                         }}
                       >
-                        {section.title}
+                        {englishMode ? section.titleEnglish : section.title}
                       </div>
                     );
                   })
@@ -106,7 +105,7 @@ const AdminControlCenter = () => {
           <div className="admin-control-center__selection-box">
             {chosenSection && (
               <div className="admin-control-center__selection-box__title bold">
-                בחר טבלה
+                {englishMode ? "Choose Table" : "בחר טבלה"}
               </div>
             )}
             {chosenSection && (
@@ -119,10 +118,10 @@ const AdminControlCenter = () => {
                       }`}
                       onClick={() => {
                         setChosenTableId(table.id);
-                        setShowModal(false);
+                        setShowActionsModal(false);
                       }}
                     >
-                      {table.title}
+                      {englishMode ? table.titleEnglish : table.title}
                     </div>
                   );
                 })}
@@ -134,14 +133,16 @@ const AdminControlCenter = () => {
         {chosenTableId && (
           <>
             <h4 className="admin-control-center__table-greeting">
-              הקש על רשומה כדי לבצע פעולות:
+              {englishMode
+                ? "Press on Row for actions"
+                : "הקש על רשומה כדי לבצע פעולות:"}
             </h4>
             <button
               className="admin-control-center__action-button"
               onClick={() => onActionRowButtonClicked("add")}
             >
               <span className="admin-control-center__action-button__extra-text">
-                {" הוסף רשומה"}
+                {englishMode ? "Add row" : "הוסף רשומה"}
               </span>
               <IoMdAdd />
             </button>
@@ -156,21 +157,25 @@ const AdminControlCenter = () => {
         )}
       </>
 
-      {showModal && (
+      {showActionsModal && (
         <div className="row-actions-container">
           <div className="row-actions-modal">
             <button
               className="row-actions-modal__close-btn"
-              onClick={() => setShowModal(false)}
+              onClick={() => setShowActionsModal(false)}
             >
               <MdClose />
             </button>
-            <div className="bold">בחר פעולה:</div>
+            <div className="bold">
+              {englishMode ? "Choose Action" : "בחר פעולה"}
+            </div>
             <div className="row-actions-modal__buttons">
               <button onClick={() => onActionRowButtonClicked("edit")}>
-                ערוך רשומה
+                {englishMode ? "Edit row" : "ערוך רשומה"}
               </button>
-              <button onClick={onDeleteRowButtonClicked}>מחק רשומה</button>
+              <button onClick={onDeleteRowButtonClicked}>
+                {englishMode ? "Delete row" : "מחק רשומה"}
+              </button>
             </div>
           </div>
         </div>
@@ -185,18 +190,46 @@ const AdminControlCenter = () => {
           sectionId={chosenSection?.id}
           tableId={chosenTable?.id}
           setRowActionForm={setRowActionForm}
+          showApplyRowActionModal={showApplyRowActionModal}
         />
       )}
 
       {rowActionStatus.success && (
         <div className="row-action-modal successful-action">
-          <span className="bold">רשומה נמחקה בהצלחה!</span>
+          <span className="bold">
+            {englishMode ? "Row" : "רשומה"}
+            {!rowAction
+              ? englishMode
+                ? " deleted "
+                : " נמחקה"
+              : rowAction === "add"
+              ? englishMode
+                ? " added "
+                : " נוספה "
+              : englishMode
+              ? " edited "
+              : " נערכה "}
+            {englishMode ? "successfully" : "בהצלחה"}
+          </span>
         </div>
       )}
 
       {rowActionStatus.error && (
         <div className="row-action-modal bad-action">
-          <span className="bold">מחיקת רשומה נכשלה</span>
+          <span className="bold">
+            {!rowAction
+              ? englishMode
+                ? " deleting "
+                : " מחיקת "
+              : rowAction === "add"
+              ? englishMode
+                ? " adding "
+                : " הוספת "
+              : englishMode
+              ? " editing "
+              : " עריכת "}
+            {englishMode ? "row failed" : "רשומה נכשלה"}
+          </span>
         </div>
       )}
     </div>

@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { CiShare2 } from "react-icons/ci";
 import { FiMoreVertical } from "react-icons/fi";
 import { IoIosArrowRoundDown } from "react-icons/io";
+import { languageContext } from "../../contexts/LanguageContext";
 
 const MoreActionsButton = () => {
   const [showCardActions, setShowCardActions] = useState(false);
+  const { language } = useContext(languageContext);
 
   return (
     <>
@@ -23,14 +25,18 @@ const MoreActionsButton = () => {
             <button>
               <CiShare2 />
             </button>
-            <span className="action-item-text">לשיתוף</span>
+            <span className="action-item-text">
+              {language === "hebrew" ? "שיתוף" : "share"}
+            </span>
           </li>
 
           <li className="card__action-item">
             <button>
               <IoIosArrowRoundDown />
             </button>
-            <span className="action-item-text">להורדה</span>
+            <span className="action-item-text">
+              {language === "hebrew" ? "הורדה" : "download"}
+            </span>
           </li>
         </ul>
       )}

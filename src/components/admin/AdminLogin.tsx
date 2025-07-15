@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { LoginDetails } from "../../models/loginDetails";
 import { LoggedUser } from "../../models/loggedUser";
 import { useNavigate } from "react-router-dom";
+import { languageContext } from "../../contexts/LanguageContext";
 
 const AdminLogin = () => {
+  const { language } = useContext(languageContext);
+  const englishMode = language === "english";
   const [showInputErrorMessage, setShowInputErrorMessage] = useState({
     email: false,
     password: false,
@@ -57,11 +60,13 @@ const AdminLogin = () => {
   return (
     <div className="admin-login-container">
       <div className="admin-login__form-container">
-        <div className="admin-login__form-title">התחברות:</div>
+        <div className="admin-login__form-title">
+          {englishMode ? "Login" : "התחברות"}
+        </div>
 
         <form onSubmit={onSubmit}>
           <div className="admin-login__form-group">
-            <label htmlFor="email">אימייל</label>
+            <label htmlFor="email">{englishMode ? "Email" : "אימייל"}</label>
             <input
               type="email"
               id="email"
@@ -70,13 +75,15 @@ const AdminLogin = () => {
             />
             {showInputErrorMessage.email && (
               <div className="admin-login__form-group__error-message semibold">
-                * שדה חובה
+                {englishMode ? "* Field is required" : "* שדה חובה"}
               </div>
             )}
           </div>
 
           <div className="admin-login__form-group">
-            <label htmlFor="password">סיסמא</label>
+            <label htmlFor="password">
+              {englishMode ? "Password" : "סיסמה"}
+            </label>
             <input
               type="password"
               id="password"
@@ -85,7 +92,7 @@ const AdminLogin = () => {
             />
             {showInputErrorMessage.password && (
               <div className="admin-login__form-group__error-message semibold">
-                * שדה חובה
+                {englishMode ? "* Field is required" : "* שדה חובה"}
               </div>
             )}
           </div>
@@ -95,12 +102,14 @@ const AdminLogin = () => {
             disabled={isEmptyInput.email || isEmptyInput.password}
             className="admin-login__form-button semibold"
           >
-            התחבר
+            {englishMode ? "login" : "התחבר"}
           </button>
 
           {isInvalidDetails && (
             <div className="admin-login__form-group__error-message semibold">
-              שם משתמש או סיסמא שגויים, אנא נסה שנית
+              {englishMode
+                ? ".Invalid email or password, try again"
+                : "שם משתמש או סיסמא שגויים, אנא נסה שנית."}
             </div>
           )}
         </form>

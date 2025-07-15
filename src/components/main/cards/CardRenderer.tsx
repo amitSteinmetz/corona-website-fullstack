@@ -1,7 +1,11 @@
 import TextualCard from "./TextualCard";
 import GraphicalCard from "./GraphicalCard";
+import { useContext } from "react";
+import { languageContext } from "../../../contexts/LanguageContext";
 
 const CardRenderer = ({ sectionId, card, hasContainerParent }) => {
+  const { language } = useContext(languageContext);
+  
   function isCardHasChildren() {
     return card.type === "container";
   }
@@ -9,7 +13,9 @@ const CardRenderer = ({ sectionId, card, hasContainerParent }) => {
   function renderCard() {
     switch (card.type) {
       case "textual":
-        return <TextualCard card={card} hasContainerParent={hasContainerParent} />;
+        return (
+          <TextualCard card={card} hasContainerParent={hasContainerParent} />
+        );
       case "graphical":
         return (
           <GraphicalCard
@@ -25,11 +31,18 @@ const CardRenderer = ({ sectionId, card, hasContainerParent }) => {
     <>
       {isCardHasChildren() ? (
         <div className="container-card">
-          <div className="container-card__title bold">{card.title}</div>
+          <div className="container-card__title bold">
+            {language === "english" ? card.titleEnglish : card.title}
+          </div>
 
           <div className="container-card__children-wrapper">
             {card.children.map((child, index: number) => (
-              <CardRenderer sectionId={sectionId} key={index} card={child} hasContainerParent={hasContainerParent}/>
+              <CardRenderer
+                sectionId={sectionId}
+                key={index}
+                card={child}
+                hasContainerParent={hasContainerParent}
+              />
             ))}
           </div>
         </div>

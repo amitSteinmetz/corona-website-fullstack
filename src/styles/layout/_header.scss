@@ -73,6 +73,13 @@
   .header__main-content {
     padding: 14px 10px 7px 29px;
 
+    .header__hamburger-btn {
+      img {
+        width: 28px;
+        height: 28px;
+      }
+    }
+
     .header__logo {
       height: 53px;
       margin: 0;
@@ -83,10 +90,6 @@
     .header__title {
       font-size: 24px;
       margin: 0 20px;
-    }
-
-    .header__hamburger-btn {
-      display: none;
     }
 
     .header__icons button {
@@ -127,8 +130,16 @@
 }
 
 @media (min-width: 768px) {
-  .header__main-content .header__title::after {
-    content: " של משרד הבריאות";
+  .header__main-content {
+    .header__hamburger-btn {
+      display: none;
+    }
+
+    .header__title::after {
+      content: attr(data-title-after);
+    }
+    .header__title::before {
+      content: attr(data-title-before);
+    }
   }
 }
-

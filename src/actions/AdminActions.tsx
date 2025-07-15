@@ -33,7 +33,7 @@ export async function editRowAction(
     console.log("Response from editRowAction:", response);
     dispatch({ type: "EDIT_ROW", payload: response });
   } catch (err) {
-    console.error("Failed to edit row", err);
+    throw new Error("Unauthorized");
   }
 }
 
@@ -79,7 +79,7 @@ export async function addRowAction(
     const response = await res.json();
     dispatch({ type: "ADD_ROW", payload: response });
   } catch (err) {
-    console.error("Failed to add row", err);
+    throw new Error("Unauthorized");
   }
 }
 

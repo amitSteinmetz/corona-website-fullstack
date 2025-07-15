@@ -7,9 +7,10 @@ import {
   Table,
 } from "../../models/table.model";
 import MoreActionsButton from "./MoreActionsButton";
-import { useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import ColorMap from "./ColorMap";
 import { FaSearch } from "react-icons/fa";
+import { languageContext } from "../../contexts/LanguageContext";
 
 const TableComponent = ({
   table,
@@ -18,6 +19,8 @@ const TableComponent = ({
   table: Table;
   onRowClicked?: (row) => void;
 }) => {
+  const { language } = useContext(languageContext);
+  const englishMode = language === "english";
   const [selectedRows, setSelectedRows] = useState<
     | HospitalBedOccupancyItem[]
     | IncomingPersonsItem[]
@@ -39,8 +42,31 @@ const TableComponent = ({
     [rowId: number]: any;
   }>(initMarkSelectedRowState());
   const [showTableFilterList, setShowTableFilterList] = useState(false);
+  const getRowKey = useCallback(
+    (row) => {
+      if (table.type === "incomingPersons") {
+        return englishMode
+          ? (row as IncomingPersonsItem).srcCountryEnglish
+          : (row as IncomingPersonsItem).srcCountry;
+      } else if (table.type === "hospitalBedOccupancy") {
+        return englishMode
+          ? (row as HospitalBedOccupancyItem).hospitalNameEnglish
+          : (row as HospitalBedOccupancyItem).hospitalName;
+      } else if (table.type === "trafficLightProgram") {
+        return englishMode
+          ? (row as TrafficLightProgramItem).cityEnglish
+          : (row as TrafficLightProgramItem).city;
+      }
+    },
+    [table.type, englishMode]
+  );
+  const getFilterListCheckedBoxes = useCallback(() => {
+    return Object.fromEntries(
+      table.rows.map((row: any) => [getRowKey(row), true])
+    );
+  }, [table.rows, getRowKey]);
   const [filterListCheckedBoxes, setFilterListCheckedBoxes] = useState(
-    Object.fromEntries(table.rows.map((row) => [getRowKey(row), true]))
+    getFilterListCheckedBoxes()
   );
   const levelsColors = {
     High: "red",
@@ -53,6 +79,10 @@ const TableComponent = ({
     setSelectedRows(table.rows);
     setSelectedRowsOrdered(table.rows);
   }, [table]);
+
+  useEffect(() => {
+    setFilterListCheckedBoxes(getFilterListCheckedBoxes());
+  }, [language, getFilterListCheckedBoxes]);
 
   function initMarkSelectedRowState() {
     const data = {};
@@ -108,23 +138,13 @@ const TableComponent = ({
     return Math.round(num * 100) / 100;
   }
 
-  function getRowKey(row): string {
-    if (table.type === "incomingPersons") {
-      return (row as IncomingPersonsItem).srcCountry;
-    } else if (table.type === "hospitalBedOccupancy") {
-      return (row as HospitalBedOccupancyItem).hospitalName;
-    } else if (table.type === "trafficLightProgram") {
-      return (row as TrafficLightProgramItem).city;
-    }
-  }
-
   function getFilterPlaceholder() {
     if (table.type === "incomingPersons") {
-      return "מדינות";
+      return englishMode ? "countries" : "מדינות";
     } else if (table.type === "hospitalBedOccupancy") {
-      return "בתי חולים/מוסדות";
+      return englishMode ? "hospitals" : "בתי חולים/מוסדות";
     } else if (table.type === "trafficLightProgram") {
-      return "יישובים";
+      return englishMode ? "cities" : "יישובים";
     }
   }
 
@@ -139,6 +159,22 @@ const TableComponent = ({
 
   function renderRow(row) {
     return Object.keys(row).map((columnName) => {
+      if (
+        englishMode &&
+        (columnName === "hospitalName" ||
+          columnName === "city" ||
+          columnName === "srcCountry")
+      ) {
+        return null;
+      } else if (
+        !englishMode &&
+        (columnName === "hospitalNameEnglish" ||
+          columnName === "cityEnglish" ||
+          columnName === "srcCountryEnglish")
+      ) {
+        return null;
+      }
+
       if (!row[columnName]) return <td>אין מידע</td>;
       else if (columnName === "id") return null;
       else if (columnName === "riskLevel") {
@@ -269,14 +305,18 @@ const TableComponent = ({
   return (
     <div className="card table-container">
       <div className="card__header">
-        <div className="card__title bold line-height-2xl">{table.title}</div>
+        <div className="card__title bold line-height-2xl">
+          {!englishMode ? table.title : table.titleEnglish}
+        </div>
 
         <button className="card__more-info_btn">
           <img src={moreInfoBtn} alt="more info" />
         </button>
 
         <div className="card__more-info_content-container">
-          <div className="card__more-info_content">{table.description}</div>
+          <div className="card__more-info_content">
+            {!englishMode ? table.description : table.descriptionEnglish}
+          </div>
         </div>
 
         <MoreActionsButton></MoreActionsButton>
@@ -289,7 +329,9 @@ const TableComponent = ({
           }`}
           onClick={() => setShowTableFilterList(!showTableFilterList)}
         >
-          {`${selectedRows.length} ${getFilterPlaceholder()} נבחרו`}
+          {`${selectedRows.length} ${getFilterPlaceholder()} ${
+            englishMode ? "selected" : "נבחרו"
+          }`}
           {showTableFilterList && (
             <IoIosArrowUp className="table-filter__selectBtn_arrow" />
           )}
@@ -302,7 +344,7 @@ const TableComponent = ({
           <div className="table-filter__list">
             <div className="table-filter__list-buttons">
               <button onClick={() => setFilterListCheckedBoxes({})}>
-                ניקוי הבחירה
+                {englishMode ? "clear" : "נקה"}
               </button>
               <button
                 onClick={() =>
@@ -313,7 +355,7 @@ const TableComponent = ({
                   )
                 }
               >
-                בחר הכל
+                {englishMode ? "select all" : "בחר הכל"}
               </button>
             </div>
 
@@ -321,7 +363,9 @@ const TableComponent = ({
               <input
                 type="text"
                 onChange={onChangeSearchBoxInput}
-                placeholder={`חפש ${getFilterPlaceholder()}`}
+                placeholder={`${
+                  englishMode ? "search" : "חפש"
+                } ${getFilterPlaceholder()}`}
                 className="table-filter__list-search-box"
               />
               <div className="search-icon">
@@ -350,7 +394,7 @@ const TableComponent = ({
                   setFilteredRows(table.rows);
                 }}
               >
-                אישור
+                {englishMode ? "apply" : "החל"}
               </button>
               <button
                 onClick={() => {
@@ -358,7 +402,7 @@ const TableComponent = ({
                   setFilteredRows(table.rows);
                 }}
               >
-                ביטול
+                {englishMode ? "cancel" : "ביטול"}
               </button>
             </div>
           </div>
@@ -383,7 +427,7 @@ const TableComponent = ({
                   }`}
                   onClick={() => sortRows(column.key)}
                 >
-                  {column.value}
+                  {englishMode ? column.valueEnglish : column.value}
                   {sortDirection === "desc" && sortColumn === column.key && (
                     <IoIosArrowDown className="arrow-btn" />
                   )}
