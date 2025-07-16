@@ -8,15 +8,11 @@ import AdminControlCenter from "../admin/AdminControlCenter";
 import ProtectedRoute from "../../routers/ProtectedRoute";
 
 function AppRouter() {
-  const { theme } = useContext(ThemeContext);
+  const { themeColor } = useContext(ThemeContext);
 
   return (
     <BrowserRouter>
-      <div
-        className={`all-page__container ${
-          theme === "dark" ? "dark-mode-background" : ""
-        }`}
-      >
+      <div className={`all-page__container ${themeColor}-theme`}>
         <Header></Header>
 
         <Routes>

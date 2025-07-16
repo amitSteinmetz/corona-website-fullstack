@@ -1,6 +1,7 @@
 .side-nav__container {
   min-width: 48px;
   position: relative;
+  background-color: var(--general-background-color);
   // position: sticky;
   // top: 139px;
   // right: 0;
@@ -17,7 +18,7 @@
     top: 139px;
     width: 253px;
     padding: 0 12px;
-    color: $textBasicColor;
+    color: var(--text-color);
 
     .side-nav__title {
       position: relative;

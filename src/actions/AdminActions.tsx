@@ -77,6 +77,8 @@ export async function addRowAction(
       }
     );
     const response = await res.json();
+    console.log("Response from addRowAction:", response);
+
     dispatch({ type: "ADD_ROW", payload: response });
   } catch (err) {
     throw new Error("Unauthorized");

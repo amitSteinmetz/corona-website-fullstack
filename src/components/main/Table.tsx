@@ -5,6 +5,7 @@ import {
   IncomingPersonsItem,
   TrafficLightProgramItem,
   Table,
+  TableColumn,
 } from "../../models/table.model";
 import MoreActionsButton from "./MoreActionsButton";
 import { useCallback, useContext, useEffect, useState } from "react";
@@ -302,6 +303,10 @@ const TableComponent = ({
     );
   }
 
+  function isEnglishColumn(column: TableColumn): boolean {
+    return column.keyEnglish === column.key;
+  }
+
   return (
     <div className="card table-container">
       <div className="card__header">
@@ -418,24 +423,26 @@ const TableComponent = ({
         <table>
           <thead>
             <tr>
-              {table.columns.map((column) => (
-                <th
-                  className={`${
-                    column.key === sortColumn
-                      ? "table-column-focused"
-                      : "medium"
-                  }`}
-                  onClick={() => sortRows(column.key)}
-                >
-                  {englishMode ? column.valueEnglish : column.value}
-                  {sortDirection === "desc" && sortColumn === column.key && (
-                    <IoIosArrowDown className="arrow-btn" />
-                  )}
-                  {sortDirection === "asc" && sortColumn === column.key && (
-                    <IoIosArrowUp className="arrow-btn" />
-                  )}
-                </th>
-              ))}
+              {table.columns.map((column) =>
+                isEnglishColumn(column) ? null : (
+                  <th
+                    className={`${
+                      column.key === sortColumn
+                        ? "table-column-focused"
+                        : "medium"
+                    }`}
+                    onClick={() => sortRows(column.key)}
+                  >
+                    {englishMode ? column.valueEnglish : column.value}
+                    {sortDirection === "desc" && sortColumn === column.key && (
+                      <IoIosArrowDown className="arrow-btn" />
+                    )}
+                    {sortDirection === "asc" && sortColumn === column.key && (
+                      <IoIosArrowUp className="arrow-btn" />
+                    )}
+                  </th>
+                )
+              )}
             </tr>
           </thead>
 

@@ -27,14 +27,14 @@
         height: calc(100vh - 115px);
         width: 100%;
         z-index: 100;
-        background-color: rgba(0, 0, 0, 0.4);
+        background-color: var(--general-background-color);
+        color: var(--text-color);
         animation: fade 0.3s ease-in-out;
 
         .subtitle__links {
           position: absolute;
           bottom: 0;
           width: 100%;
-          background-color: white;
           border-top-left-radius: 20px;
           border-top-right-radius: 20px;
 
@@ -54,7 +54,6 @@
             display: flex;
             align-items: center;
             padding: 15px;
-            color: $textBasicColor;
 
             .web-icon {
               margin-left: 10px;
@@ -101,7 +100,6 @@
     right: 25px;
     width: 300px;
     height: auto;
-    background-color: white;
 
     .subtitle__links {
       position: static;

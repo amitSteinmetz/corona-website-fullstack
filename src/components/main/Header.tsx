@@ -7,9 +7,11 @@ import {
 } from "../../assets/svgs";
 import { ThemeContext } from "../../contexts/ThemeContext";
 import { languageContext } from "../../contexts/LanguageContext";
+import { useLocation } from "react-router-dom";
 
 const Header = () => {
-  const { theme, toggleTheme } = useContext(ThemeContext);
+  const location = useLocation();
+  const { toggleThemeColor } = useContext(ThemeContext);
   const { language, toggleLanguage } = useContext(languageContext);
   const englishMode = language === "english";
   const [isGradientLineLoadingAnimate, setIsGradientLineLoadingAnimate] =
@@ -47,15 +49,17 @@ const Header = () => {
         </div>
 
         <div className="header__icons">
-          <button onClick={toggleLanguage}>
-            <img
-              className="change-language-icon"
-              src={changeLanguageBtn}
-              alt="כפתור שינוי שפה"
-            />
-          </button>
+          {location.pathname !== "/admin/control-center" && (
+            <button onClick={toggleLanguage}>
+              <img
+                className="change-language-icon"
+                src={changeLanguageBtn}
+                alt="כפתור שינוי שפה"
+              />
+            </button>
+          )}
 
-          <button onClick={toggleTheme}>
+          <button onClick={toggleThemeColor}>
             <img src={changeThemeColorBtn} alt="כפתור שינוי רקע" />
           </button>
         </div>

@@ -1,5 +1,11 @@
 import { useCallback, useContext, useState, useEffect } from "react";
-import { RowItem, TableColumn } from "../../models/table.model";
+import {
+  HospitalBedOccupancyItem,
+  IncomingPersonsItem,
+  RowItem,
+  TableColumn,
+  TrafficLightProgramItem,
+} from "../../models/table.model";
 import { DataContext } from "../../contexts/DataContext";
 import { addRowAction, editRowAction } from "../../actions/AdminActions";
 import { MdClose } from "react-icons/md";
@@ -37,7 +43,6 @@ const AdminRowActionsForm = ({
             : column.key;
         initialData[columnKey] = currentRow[columnKey];
       });
-      console.log("formData", initialData);
       return initialData;
     } else return {};
   }, [action, currentRow, columns, englishMode]);
@@ -50,16 +55,6 @@ const AdminRowActionsForm = ({
     setFormData(getFormData());
   }, [getFormData, language]);
 
-  // function getFormData() {
-  //   if (action === "edit" && currentRow) {
-  //     const initialData = {};
-  //     columns.forEach((column) => {
-  //       initialData[column.key] = currentRow[column.key];
-  //     });
-  //     return initialData;
-  //   } else return {};
-  // }
-
   function onChangeInput(event) {
     const { name, value } = event.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -68,9 +63,10 @@ const AdminRowActionsForm = ({
   async function onSubmitForm(event) {
     event.preventDefault();
 
-    const updatedFormData = currentRow
-      ? { ...formData, id: currentRow.id }
-      : { ...formData };
+    const updatedFormData =
+      (currentRow && action === "edit")
+        ? { ...formData, id: currentRow.id }
+        : { ...formData };
 
     if (action === "edit") {
       try {
@@ -114,6 +110,7 @@ const AdminRowActionsForm = ({
         >
           <MdClose />
         </button>
+
         {columns.map((column) => {
           return (
             <div>
@@ -137,6 +134,7 @@ const AdminRowActionsForm = ({
             </div>
           );
         })}
+
         <button
           type="submit"
           className="admin-actions-form__submit-btn semibold"
