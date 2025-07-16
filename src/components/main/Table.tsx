@@ -1,5 +1,5 @@
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
-import { moreInfoBtn } from "../../assets/svgs";
+import { IoMdInformationCircle } from "react-icons/io";
 import {
   HospitalBedOccupancyItem,
   IncomingPersonsItem,
@@ -12,6 +12,7 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import ColorMap from "./ColorMap";
 import { FaSearch } from "react-icons/fa";
 import { languageContext } from "../../contexts/LanguageContext";
+import { ThemeContext } from "../../contexts/ThemeContext";
 
 const TableComponent = ({
   table,
@@ -20,6 +21,7 @@ const TableComponent = ({
   table: Table;
   onRowClicked?: (row) => void;
 }) => {
+  const { themeColor } = useContext(ThemeContext);
   const { language } = useContext(languageContext);
   const englishMode = language === "english";
   const [selectedRows, setSelectedRows] = useState<
@@ -315,7 +317,9 @@ const TableComponent = ({
         </div>
 
         <button className="card__more-info_btn">
-          <img src={moreInfoBtn} alt="more info" />
+          <IoMdInformationCircle
+            color={`${themeColor === "light" ? "black" : "white"}`}
+          />
         </button>
 
         <div className="card__more-info_content-container">

@@ -1,9 +1,10 @@
 import { useState, useEffect, useContext } from "react";
+import { RxHamburgerMenu } from "react-icons/rx";
 import logo from "../../assets/images/logo.png";
 import {
   changeLanguageBtn,
-  changeThemeColorBtn,
-  hamburgerBtn,
+  changeThemeColorBtnLight,
+  changeThemeColorBtnDark,
 } from "../../assets/svgs";
 import { ThemeContext } from "../../contexts/ThemeContext";
 import { languageContext } from "../../contexts/LanguageContext";
@@ -11,7 +12,7 @@ import { useLocation } from "react-router-dom";
 
 const Header = () => {
   const location = useLocation();
-  const { toggleThemeColor } = useContext(ThemeContext);
+  const { themeColor, toggleThemeColor } = useContext(ThemeContext);
   const { language, toggleLanguage } = useContext(languageContext);
   const englishMode = language === "english";
   const [isGradientLineLoadingAnimate, setIsGradientLineLoadingAnimate] =
@@ -33,7 +34,9 @@ const Header = () => {
 
       <div className="header__main-content">
         <button className="header__hamburger-btn">
-          <img src={hamburgerBtn} alt="תפריט" />
+          <RxHamburgerMenu
+            color={`${themeColor === "light" ? "black" : "white"}`}
+          />
         </button>
 
         <img className="header__logo" src={logo} alt="לוגו משרד הבריאות" />
@@ -60,7 +63,14 @@ const Header = () => {
           )}
 
           <button onClick={toggleThemeColor}>
-            <img src={changeThemeColorBtn} alt="כפתור שינוי רקע" />
+            <img
+              src={
+                themeColor === "dark"
+                  ? changeThemeColorBtnLight
+                  : changeThemeColorBtnDark
+              }
+              alt="כפתור שינוי רקע"
+            />
           </button>
         </div>
       </div>

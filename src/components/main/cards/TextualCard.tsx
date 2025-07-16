@@ -1,9 +1,11 @@
 import { useContext } from "react";
-import { moreInfoBtn } from "../../../assets/svgs";
+import { IoMdInformationCircle } from "react-icons/io";
 import { TextualCardModel } from "../../../models/card.model";
 import { languageContext } from "../../../contexts/LanguageContext";
+import { ThemeContext } from "../../../contexts/ThemeContext";
 
 const TextualCard = ({ card, hasContainerParent }) => {
+  const { themeColor } = useContext(ThemeContext);
   const { language } = useContext(languageContext);
   const englishMode = language === "english";
   const textualCard: TextualCardModel = card as TextualCardModel;
@@ -21,7 +23,9 @@ const TextualCard = ({ card, hasContainerParent }) => {
         </div>
 
         <button className="card__more-info_btn">
-          <img src={moreInfoBtn} alt="more info" />
+          <IoMdInformationCircle
+            color={`${themeColor === "light" ? "#233333" : "white"}`}
+          />
         </button>
 
         <div className="card__more-info_content-container">

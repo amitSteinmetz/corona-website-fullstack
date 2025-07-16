@@ -1,17 +1,19 @@
 .admin-login-container {
   @include flex-center;
   min-height: calc(100vh - 74px);
-  background-color: rgb(248, 250, 253);
+  background-color: var(--general-background-color);
 
   .admin-login__form-container {
     position: relative;
     width: 90%;
     max-width: 400px;
     padding: 2rem 1.5rem 2rem;
-    background-color: $darkBlueBackground;
+    background-color: var(--admin-login-form-background-color);
+    color: var(--admin-login-form-text-color);
+    border-radius: 10px;
+    box-shadow: 0 5px 7px rgba(0, 0, 0, 0.3);
 
     .admin-login__form-title {
-      color: white;
       font-size: 2rem;
       margin-bottom: 1rem;
       text-align: center;
@@ -22,7 +24,6 @@
       margin-bottom: 1.5rem;
 
       label {
-        color: white;
         font-size: 1.2rem;
         display: block;
         margin-bottom: 0.5rem;
@@ -34,6 +35,7 @@
         border-radius: 4px;
         border: none;
         font-size: 1rem;
+        background-color: var(--admin-login-form-text-color);
 
         &:focus {
           outline: none;
@@ -46,7 +48,7 @@
       display: block;
       @include reset-button;
       background-color: rgb(145, 181, 214);
-      color: $textBasicColor;
+      color: var(--admin-login-form-text-color);
       padding: 0.75rem 0;
       margin: 1.5rem auto 0;
       font-size: 1.2rem;
@@ -58,7 +60,6 @@
       }
 
       &:disabled {
-        // background-color: rgb(200, 200, 200);
         background-color: rgb(155, 150, 150);
         cursor: not-allowed;
       }
