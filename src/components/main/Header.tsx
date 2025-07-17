@@ -9,11 +9,13 @@ import {
 import { ThemeContext } from "../../contexts/ThemeContext";
 import { languageContext } from "../../contexts/LanguageContext";
 import { useLocation } from "react-router-dom";
+import { DataContext } from "../../contexts/DataContext";
 
 const Header = () => {
   const location = useLocation();
   const { themeColor, toggleThemeColor } = useContext(ThemeContext);
   const { language, toggleLanguage } = useContext(languageContext);
+  const { toggleSideNav } = useContext(DataContext);
   const englishMode = language === "english";
   const [isGradientLineLoadingAnimate, setIsGradientLineLoadingAnimate] =
     useState(false);
@@ -33,11 +35,13 @@ const Header = () => {
       ></div>
 
       <div className="header__main-content">
-        <button className="header__hamburger-btn">
-          <RxHamburgerMenu
-            color={`${themeColor === "light" ? "black" : "white"}`}
-          />
-        </button>
+        {!location.pathname.includes("admin") && (
+          <button className="header__hamburger-btn" onClick={toggleSideNav}>
+            <RxHamburgerMenu
+              color={`${themeColor === "light" ? "black" : "white"}`}
+            />
+          </button>
+        )}
 
         <img className="header__logo" src={logo} alt="לוגו משרד הבריאות" />
 

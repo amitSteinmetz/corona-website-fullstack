@@ -55,17 +55,13 @@
 
   .header__logo {
     height: 40px;
-    margin: 0 10px;
+    margin: 0 2rem 0 5px;
   }
 
   .header__hamburger-btn {
     @include reset-button;
+    font-size: 1.5rem;
     margin-top: 5px;
-
-    img {
-      width: 24px;
-      height: 24px;
-    }
   }
 }
 
@@ -74,10 +70,7 @@
     padding: 14px 10px 7px 29px;
 
     .header__hamburger-btn {
-      img {
-        width: 28px;
-        height: 28px;
-      }
+      display: none;
     }
 
     .header__logo {
@@ -131,10 +124,6 @@
 
 @media (min-width: 768px) {
   .header__main-content {
-    .header__hamburger-btn {
-      display: none;
-    }
-
     .header__title::after {
       content: attr(data-title-after);
     }

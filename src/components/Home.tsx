@@ -1,13 +1,14 @@
 import { useContext, useState, useRef, createRef, useEffect } from "react";
 import Section from "../components/main/Section";
 import { DataContext } from "./../contexts/DataContext";
-// import { HEADER_NAV_LINKS } from "./../constants/main/HeaderConstants";
+import { sideNavArrowLeftBtn, sideNavArrowRightBtn } from "../assets/svgs";
 import SideNav from "./main/SideNav";
 import { languageContext } from "../contexts/LanguageContext";
 
 const Home = () => {
   const { sections } = useContext(DataContext);
   const { language } = useContext(languageContext);
+  const { showSideNav, toggleSideNav } = useContext(DataContext);
   const englishMode = language === "english";
   const [activeLinkIndex, setActiveLinkIndex] = useState(0);
   const sectionRefs = useRef({});
@@ -86,6 +87,18 @@ const Home = () => {
       </div>
 
       <div className="home-page__body">
+        <button
+          className="side-nav__open-nav-btn"
+          style={{ right: showSideNav ? "228px" : "22px" }}
+          onClick={toggleSideNav}
+        >
+          <img
+            src={showSideNav ? sideNavArrowRightBtn : sideNavArrowLeftBtn}
+            alt="Toggle Side Navigation"
+            className="side-nav__btn"
+          />
+        </button>
+
         <SideNav />
 
         <div className="home-page__body__main">

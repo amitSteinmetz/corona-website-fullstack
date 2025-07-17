@@ -15,6 +15,7 @@ export interface TableColumn {
   value: string;
   valueEnglish: string;
   inPercentages: boolean;
+  valueType: string;
 }
 
 export interface HospitalBedOccupancyTable extends TableModel {

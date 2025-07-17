@@ -1,7 +1,7 @@
 .control-center__container {
-  background-color: var(--general-background-color);
+  background-color: var(--mainPage-background-color);
   min-height: calc(100vh - 74px);
-  padding: 2rem;
+  padding: 3rem 2rem;
   border-top: 1px solid var(--form-border-color);
 
   .admin-control-center__greeting {
@@ -23,7 +23,6 @@
         border-radius: 10px;
         box-shadow: 0 3px 3px rgba(0, 0, 0, 0.1);
         padding: 0.5rem 1rem;
-        cursor: pointer;
       }
 
       .admin-control-center__selection-box__title {
@@ -37,6 +36,7 @@
         flex-direction: column;
         gap: 0.5rem;
         min-width: 200px;
+        cursor: pointer;
 
         .admin-control-center__selection-box__options__item {
           border: 0.5px solid $darkBlueBackground;

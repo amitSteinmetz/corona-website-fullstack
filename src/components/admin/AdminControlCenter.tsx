@@ -201,7 +201,7 @@ const AdminControlCenter = () => {
             {!rowAction
               ? englishMode
                 ? " deleted "
-                : " נמחקה"
+                : " נמחקה "
               : rowAction === "add"
               ? englishMode
                 ? " added "

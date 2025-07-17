@@ -38,7 +38,7 @@ const TimeTableFilter = ({ sectionId, cardId }) => {
       valueEnglish: "All",
     },
   ];
-  const [displayedTimeRange, setDisplayedTimeRange] = useState(timeRanges[0]);
+  const [displayedTimeRange, setDisplayedTimeRange] = useState(null);
   const [selectedTimeRange, setSelectedTimeRange] = useState(timeRanges[0]);
   const { language } = useContext(languageContext);
   const englishMode = language === "english";
@@ -57,9 +57,10 @@ const TimeTableFilter = ({ sectionId, cardId }) => {
         onClick={() => setShowTable(!showTable)}
       >
         <span>
-          {englishMode
+          {displayedTimeRange ? 
+          (englishMode
             ? displayedTimeRange.valueEnglish
-            : displayedTimeRange.valueHebrew}
+            : displayedTimeRange.valueHebrew) : (englishMode ? "Select time range" : "בחר טווח זמן")}
         </span>
         <IoIosArrowDown />
       </div>

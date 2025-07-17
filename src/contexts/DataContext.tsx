@@ -7,8 +7,8 @@ import { setSectionsAction } from "../actions/AdminActions";
 export const DataContext = createContext(null);
 
 const DataProvider = ({ children }) => {
-  // const [sections, setSections] = useState<SectionModel[]>();
   const [sections, sectionsDispatch] = useReducer(AdminReducer, []);
+  const [showSideNav, setShowSideNav] = useState<boolean>(false);
 
   // First website initialization
   useEffect(() => {
@@ -50,9 +50,19 @@ const DataProvider = ({ children }) => {
       .catch((err) => console.error("Amit Error:", err));
   }
 
+  function toggleSideNav() {
+    setShowSideNav(!showSideNav);
+  }
+
   return (
     <DataContext.Provider
-      value={{ sections, sectionsDispatch, onChangeGraphDataTimeRange }}
+      value={{
+        sections,
+        sectionsDispatch,
+        onChangeGraphDataTimeRange,
+        showSideNav,
+        toggleSideNav,
+      }}
     >
       {children}
     </DataContext.Provider>

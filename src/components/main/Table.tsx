@@ -13,6 +13,7 @@ import ColorMap from "./ColorMap";
 import { FaSearch } from "react-icons/fa";
 import { languageContext } from "../../contexts/LanguageContext";
 import { ThemeContext } from "../../contexts/ThemeContext";
+import { useLocation } from "react-router-dom";
 
 const TableComponent = ({
   table,
@@ -21,6 +22,7 @@ const TableComponent = ({
   table: Table;
   onRowClicked?: (row) => void;
 }) => {
+  const location = useLocation();
   const { themeColor } = useContext(ThemeContext);
   const { language } = useContext(languageContext);
   const englishMode = language === "english";
@@ -99,6 +101,8 @@ const TableComponent = ({
   }
 
   function onRowClickedHandler(row) {
+    if (!location.pathname.includes("admin")) return;
+
     const rowClicks = { firstClick: false, secondClick: false };
 
     if (!markSelectedRow[row.id]?.firstClick) {
@@ -409,6 +413,11 @@ const TableComponent = ({
                 onClick={() => {
                   setShowTableFilterList(false);
                   setFilteredRows(table.rows);
+                  setFilterListCheckedBoxes(
+                    Object.fromEntries(
+                      selectedRows.map((row) => [getRowKey(row), true])
+                    )
+                  );
                 }}
               >
                 {englishMode ? "cancel" : "ביטול"}
@@ -432,7 +441,7 @@ const TableComponent = ({
                   <th
                     className={`${
                       column.key === sortColumn
-                        ? "table-column-focused"
+                        ? `column-${sortDirection}-order-color`
                         : "medium"
                     }`}
                     onClick={() => sortRows(column.key)}

@@ -104,6 +104,7 @@
   .table-rows {
     margin-top: 0.8rem;
     overflow-y: auto;
+    overflow-x: hidden;
 
     table {
       border-collapse: collapse;
@@ -139,8 +140,14 @@
   }
 }
 
-.table-column-focused {
+.column-asc-order-color {
   color: #627ed3;
+  font-weight: 900;
+}
+
+.column-desc-order-color {
+  color: #3f925b;
+  font-weight: 900;
 }
 
 .percentage-bar {
@@ -171,6 +178,7 @@
   position: absolute;
   font-size: 0.9rem;
   padding: 4px 3px 0 0;
+  display: none;
 }
 
 .level-square-container {
@@ -229,10 +237,19 @@
     .row-percentageNumber-field {
       column-gap: 0.8rem;
     }
+  }
+}
 
+@media (min-width: 768px) {
+  .table-container {
     .arrow-btn {
+      display: inline-block;
       font-size: 1.2rem;
       padding: 6px 3px 0 0;
     }
+  }
+
+  .column-desc-order-color {
+    color: #627ed3;
   }
 }

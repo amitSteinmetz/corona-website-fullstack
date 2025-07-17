@@ -106,7 +106,7 @@ const AdminLogin = () => {
           </button>
 
           {isInvalidDetails && (
-            <div className="admin-login__form-group__error-message semibold">
+            <div className="admin-login__form-group__error-message bold">
               {englishMode
                 ? ".Invalid email or password, try again"
                 : "שם משתמש או סיסמא שגויים, אנא נסה שנית."}

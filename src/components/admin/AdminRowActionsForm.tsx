@@ -46,9 +46,20 @@ const AdminRowActionsForm = ({
       return initialData;
     } else return {};
   }, [action, currentRow, columns, englishMode]);
-
   const [formData, setFormData] = useState<{ [columnName: string]: any }>(
     getFormData()
+  );
+  const [isFormInputValid, setIsFormInputValid] = useState<{
+    [inputName: string]: boolean;
+  }>(
+    columns.reduce((acc, column) => {
+      const key =
+        englishMode && column.keyEnglish !== ""
+          ? column.keyEnglish
+          : column.key;
+      acc[key] = false;
+      return acc;
+    }, {} as { [inputName: string]: boolean })
   );
 
   useEffect(() => {
@@ -57,16 +68,83 @@ const AdminRowActionsForm = ({
 
   function onChangeInput(event) {
     const { name, value } = event.target;
+    setInputValidity(name, value);
     setFormData((prev) => ({ ...prev, [name]: value }));
+  }
+
+  function setInputValidity(name, value) {
+    let isValid = true;
+
+    const column = columns.find(
+      (col) => col.key === name || col.keyEnglish === name
+    );
+    if (!column || value === "" || value.trim() === "") isValid = false;
+
+    if (column.valueType === "number") {
+      if (isNaN(Number(value))) {
+        console.log("entered string instead a number!!!!!");
+        isValid = false;
+      }
+    } else if (column.valueType === "string") {
+      if (!isNaN(Number(value)) || value.trim() === "") {
+        console.log("entered number unstead string");
+        isValid = false;
+      }
+    }
+
+    setIsFormInputValid((prev) => ({ ...prev, [name]: isValid }));
+  }
+
+  function getInputErrorMessage(coumnType) {
+    return (
+      "" + (coumnType === "number" ? "Must be a number" : "Must be a string")
+    );
+  }
+
+  function isFormValid() {
+    for (const [key, isValid] of Object.entries(isFormInputValid)) {
+      if (!isValid) {
+        console.log(`Input ${key} is invalid`);
+        return false;
+      }
+    }
+
+    return true;
+
+    // for (const column of columns) {
+    //   const columnKey =
+    //     englishMode && column.keyEnglish !== ""
+    //       ? column.keyEnglish
+    //       : column.key;
+    //   const formValue = formData[columnKey];
+    //   if (!formValue) continue;
+
+    //   if (column.valueType === "number") {
+    //     if (isNaN(Number(formValue))) {
+    //       console.log("entered string instead a number!!!!!");
+    //       return false;
+    //     }
+    //   } else if (column.valueType === "string") {
+    //     if (!isNaN(Number(formValue)) || formValue.trim() === "") {
+    //       console.log("entered number unstead string");
+    //       return false;
+    //     }
+    //   }
+    // }
+    // return true;
   }
 
   async function onSubmitForm(event) {
     event.preventDefault();
 
+    if (!isFormValid()) return;
+
     const updatedFormData =
-      (currentRow && action === "edit")
+      currentRow && action === "edit"
         ? { ...formData, id: currentRow.id }
         : { ...formData };
+
+    console.log("Updated Form Data:", updatedFormData);
 
     if (action === "edit") {
       try {
@@ -131,6 +209,15 @@ const AdminRowActionsForm = ({
                 }
                 onChange={onChangeInput}
               />
+              {!isFormInputValid[
+                englishMode && column?.keyEnglish !== ""
+                  ? column?.keyEnglish
+                  : column?.key
+              ] && (
+                <div className="admin-actions-form__input-error-message">
+                  {getInputErrorMessage(column.valueType)}
+                </div>
+              )}
             </div>
           );
         })}
@@ -138,6 +225,7 @@ const AdminRowActionsForm = ({
         <button
           type="submit"
           className="admin-actions-form__submit-btn semibold"
+          disabled={!isFormValid()}
         >
           {action === "edit"
             ? englishMode
