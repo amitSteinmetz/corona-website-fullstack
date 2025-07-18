@@ -1,10 +1,7 @@
 import { useCallback, useContext, useState, useEffect } from "react";
 import {
-  HospitalBedOccupancyItem,
-  IncomingPersonsItem,
   RowItem,
   TableColumn,
-  TrafficLightProgramItem,
 } from "../../models/table.model";
 import { DataContext } from "../../contexts/DataContext";
 import { addRowAction, editRowAction } from "../../actions/AdminActions";
@@ -71,6 +68,7 @@ const AdminRowActionsForm = ({
   function onChangeInput(event) {
     const { name, value } = event.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    setInputValidity(name, value);
   }
   useEffect(() => {
     let isValidForm = true;
@@ -109,13 +107,13 @@ const AdminRowActionsForm = ({
 
     setIsFormInputValid((prev) => ({ ...prev, [name]: isValid }));
   }
-  function getInputErrorMessage(coumnType) {
+  function getInputErrorMessage(columnType) {
     let errorMessage = "";
-    if (coumnType === "number") {
+    if (columnType === "number") {
       errorMessage = englishMode
         ? "* Only digits allowed"
         : "* יש להזין מספרים בלבד";
-    } else if (coumnType === "string") {
+    } else if (columnType === "string") {
       errorMessage = englishMode
         ? "* Input must contain also text"
         : "* השדה חייב להכיל גם אותיות";
@@ -166,11 +164,6 @@ const AdminRowActionsForm = ({
     setRowActionForm(false);
   }
 
-  function onBlurInput(event) {
-    const { name, value } = event.target;
-    setInputValidity(name, value);
-  }
-
   return (
     <div className="admin-actions-form__container">
       <form onSubmit={onSubmitForm}>
@@ -200,7 +193,6 @@ const AdminRowActionsForm = ({
                     : formData[column?.key]) || ""
                 }
                 onChange={onChangeInput}
-                onBlur={onBlurInput}
               />
               {!isFormInputValid[
                 englishMode && column?.keyEnglish !== ""

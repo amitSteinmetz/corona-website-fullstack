@@ -104,7 +104,7 @@ const Section = ({ sectionData }: { sectionData: SectionModel }) => {
 
       <div className="cards-margin">
         {sectionData.tables.map((table) => (
-          <TableComponent table={table}></TableComponent>
+          <TableComponent table={table} rowActionsModalVisible={false}></TableComponent>
         ))}
       </div>
     </div>

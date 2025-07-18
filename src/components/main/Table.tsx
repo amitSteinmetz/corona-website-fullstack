@@ -18,9 +18,11 @@ import { useLocation } from "react-router-dom";
 const TableComponent = ({
   table,
   onRowClicked,
+  rowActionsModalVisible,
 }: {
   table: Table;
   onRowClicked?: (row) => void;
+  rowActionsModalVisible: boolean;
 }) => {
   const location = useLocation();
   const { themeColor } = useContext(ThemeContext);
@@ -467,7 +469,9 @@ const TableComponent = ({
                 className={`${
                   markSelectedRow[row.id]?.firstClick ? "selected-first" : ""
                 } ${
-                  markSelectedRow[row.id]?.secondClick ? "selected-second" : ""
+                  rowActionsModalVisible && markSelectedRow[row.id]?.secondClick
+                    ? "selected-second"
+                    : ""
                 }`}
               >
                 {renderRow(row)}

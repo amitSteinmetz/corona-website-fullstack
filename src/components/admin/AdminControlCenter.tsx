@@ -54,15 +54,18 @@ const AdminControlCenter = () => {
     }
   }
   const handleRowClick = (row) => {
-    if (chosenRow === row) {
-      if (showActionsModal) {
-        setShowActionsModal(false);
-        setChosenRowId(null);
-      } else setShowActionsModal(true);
-    } else {
-      setShowActionsModal(false);
-      setChosenRowId(row.id);
-    }
+    if (row !== chosenRow) setChosenRowId(row.id);
+    else setShowActionsModal(true);
+
+    // if (chosenRow === row) {
+    //   if (showActionsModal) {
+    //     setShowActionsModal(false);
+    //     setChosenRowId(null);
+    //   } else setShowActionsModal(true);
+    // } else {
+    //   // setShowActionsModal(false);
+    //   setChosenRowId(row.id);
+    // }
   };
 
   return (
@@ -151,6 +154,7 @@ const AdminControlCenter = () => {
               <TableComponent
                 table={chosenTable}
                 onRowClicked={handleRowClick}
+                rowActionsModalVisible={showActionsModal}
               />
             )}
           </>
@@ -162,7 +166,10 @@ const AdminControlCenter = () => {
           <div className="row-actions-modal">
             <button
               className="row-actions-modal__close-btn"
-              onClick={() => setShowActionsModal(false)}
+              onClick={() => {
+                setShowActionsModal(false);
+                setChosenRowId(null);
+              }}
             >
               <MdClose />
             </button>
