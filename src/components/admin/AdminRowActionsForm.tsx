@@ -34,18 +34,20 @@ const AdminRowActionsForm = ({
   const englishMode = language === "english";
   const { sectionsDispatch } = useContext(DataContext);
   const getFormData = useCallback(() => {
-    if (action === "edit" && currentRow) {
-      const initialData = {};
-      columns.forEach((column) => {
-        const columnKey =
-          englishMode && column.keyEnglish !== ""
-            ? column.keyEnglish
-            : column.key;
-        initialData[columnKey] = currentRow[columnKey];
-      });
-      return initialData;
-    } else return {};
-  }, [action, currentRow, columns, englishMode]);
+    const initialData = {};
+    columns.forEach((column) => {
+      const columnKey =
+        englishMode && column.keyEnglish !== ""
+          ? column.keyEnglish
+          : column.key;
+
+      initialData[columnKey] =
+        currentRow && currentRow[columnKey] != null
+          ? currentRow[columnKey]
+          : "";
+    });
+    return initialData;
+  }, [currentRow, columns, englishMode]);
   const [formData, setFormData] = useState<{ [columnName: string]: any }>(
     getFormData()
   );
@@ -57,20 +59,33 @@ const AdminRowActionsForm = ({
         englishMode && column.keyEnglish !== ""
           ? column.keyEnglish
           : column.key;
-      acc[key] = false;
+      acc[key] = true;
       return acc;
     }, {} as { [inputName: string]: boolean })
   );
+  const [isValidForm, setIsValidForm] = useState(false);
 
   useEffect(() => {
     setFormData(getFormData());
   }, [getFormData, language]);
-
   function onChangeInput(event) {
     const { name, value } = event.target;
-    setInputValidity(name, value);
     setFormData((prev) => ({ ...prev, [name]: value }));
   }
+  useEffect(() => {
+    let isValidForm = true;
+
+    for (const [, isValid] of Object.entries(isFormInputValid)) {
+      if (!isValid) isValidForm = false;
+    }
+
+    // Check that all the fields in formData are not empty
+    for (const [, value] of Object.entries(formData)) {
+      if (value === "") isValidForm = false;
+    }
+
+    setIsValidForm(isValidForm);
+  }, [formData, isFormInputValid]);
 
   function setInputValidity(name, value) {
     let isValid = true;
@@ -94,50 +109,22 @@ const AdminRowActionsForm = ({
 
     setIsFormInputValid((prev) => ({ ...prev, [name]: isValid }));
   }
-
   function getInputErrorMessage(coumnType) {
-    return (
-      "" + (coumnType === "number" ? "Must be a number" : "Must be a string")
-    );
-  }
-
-  function isFormValid() {
-    for (const [key, isValid] of Object.entries(isFormInputValid)) {
-      if (!isValid) {
-        console.log(`Input ${key} is invalid`);
-        return false;
-      }
+    let errorMessage = "";
+    if (coumnType === "number") {
+      errorMessage = englishMode
+        ? "* Only digits allowed"
+        : "* יש להזין מספרים בלבד";
+    } else if (coumnType === "string") {
+      errorMessage = englishMode
+        ? "* Input must contain also text"
+        : "* השדה חייב להכיל גם אותיות";
     }
-
-    return true;
-
-    // for (const column of columns) {
-    //   const columnKey =
-    //     englishMode && column.keyEnglish !== ""
-    //       ? column.keyEnglish
-    //       : column.key;
-    //   const formValue = formData[columnKey];
-    //   if (!formValue) continue;
-
-    //   if (column.valueType === "number") {
-    //     if (isNaN(Number(formValue))) {
-    //       console.log("entered string instead a number!!!!!");
-    //       return false;
-    //     }
-    //   } else if (column.valueType === "string") {
-    //     if (!isNaN(Number(formValue)) || formValue.trim() === "") {
-    //       console.log("entered number unstead string");
-    //       return false;
-    //     }
-    //   }
-    // }
-    // return true;
+    return errorMessage;
   }
 
   async function onSubmitForm(event) {
     event.preventDefault();
-
-    if (!isFormValid()) return;
 
     const updatedFormData =
       currentRow && action === "edit"
@@ -179,6 +166,11 @@ const AdminRowActionsForm = ({
     setRowActionForm(false);
   }
 
+  function onBlurInput(event) {
+    const { name, value } = event.target;
+    setInputValidity(name, value);
+  }
+
   return (
     <div className="admin-actions-form__container">
       <form onSubmit={onSubmitForm}>
@@ -208,6 +200,7 @@ const AdminRowActionsForm = ({
                     : formData[column?.key]) || ""
                 }
                 onChange={onChangeInput}
+                onBlur={onBlurInput}
               />
               {!isFormInputValid[
                 englishMode && column?.keyEnglish !== ""
@@ -225,7 +218,7 @@ const AdminRowActionsForm = ({
         <button
           type="submit"
           className="admin-actions-form__submit-btn semibold"
-          disabled={!isFormValid()}
+          disabled={!isValidForm}
         >
           {action === "edit"
             ? englishMode

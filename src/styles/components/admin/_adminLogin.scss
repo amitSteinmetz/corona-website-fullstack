@@ -60,7 +60,8 @@
       }
 
       &:disabled {
-        background-color: rgb(175 175 175);
+        background-color: #ccc;
+        color: #666;
         cursor: not-allowed;
       }
     }
