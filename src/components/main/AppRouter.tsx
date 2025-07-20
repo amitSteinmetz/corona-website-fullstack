@@ -6,13 +6,15 @@ import Home from "../Home";
 import AdminLogin from "../admin/AdminLogin";
 import AdminControlCenter from "../admin/AdminControlCenter";
 import ProtectedRoute from "../../routers/ProtectedRoute";
+import { languageContext } from "../../contexts/LanguageContext";
 
 function AppRouter() {
   const { themeColor } = useContext(ThemeContext);
+  const { language } = useContext(languageContext);
 
   return (
     <BrowserRouter>
-      <div className={`all-page__container ${themeColor}-theme`}>
+      <div className={`all-page__container ${themeColor}-theme ${language}`}>
         <Header></Header>
 
         <Routes>

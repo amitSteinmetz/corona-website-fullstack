@@ -54,18 +54,8 @@ const AdminControlCenter = () => {
     }
   }
   const handleRowClick = (row) => {
-    if (row !== chosenRow) setChosenRowId(row.id);
-    else setShowActionsModal(true);
-
-    // if (chosenRow === row) {
-    //   if (showActionsModal) {
-    //     setShowActionsModal(false);
-    //     setChosenRowId(null);
-    //   } else setShowActionsModal(true);
-    // } else {
-    //   // setShowActionsModal(false);
-    //   setChosenRowId(row.id);
-    // }
+    setChosenRowId(row.id);
+    setShowActionsModal(true);
   };
 
   return (

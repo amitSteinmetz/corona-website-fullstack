@@ -94,10 +94,7 @@ const TableComponent = ({
   function initMarkSelectedRowState() {
     const data = {};
     table.rows.forEach((row) => {
-      data[row.id] = {
-        firstClick: false,
-        secondClick: false,
-      };
+      data[row.id] = false;
     });
     return data;
   }
@@ -105,22 +102,14 @@ const TableComponent = ({
   function onRowClickedHandler(row) {
     if (!location.pathname.includes("admin")) return;
 
-    const rowClicks = { firstClick: false, secondClick: false };
-
-    if (!markSelectedRow[row.id]?.firstClick) {
-      rowClicks.firstClick = true;
-    } else if (!markSelectedRow[row.id]?.secondClick) {
-      rowClicks.firstClick = true;
-      rowClicks.secondClick = true;
-    }
     setMarkSelectedRow((prev) => {
       const newMarkSelectedRow = {};
       Object.keys(prev).forEach((rowId) => {
         if (rowId !== row.id) {
-          newMarkSelectedRow[rowId] = { firstClick: false, secondClick: false };
+          newMarkSelectedRow[rowId] = false;
         }
       });
-      newMarkSelectedRow[row.id] = rowClicks;
+      newMarkSelectedRow[row.id] = true;
       return newMarkSelectedRow;
     });
 
@@ -467,10 +456,8 @@ const TableComponent = ({
                 onClick={() => onRowClickedHandler(row)}
                 tabIndex={0}
                 className={`${
-                  markSelectedRow[row.id]?.firstClick ? "selected-first" : ""
-                } ${
-                  rowActionsModalVisible && markSelectedRow[row.id]?.secondClick
-                    ? "selected-second"
+                  rowActionsModalVisible && markSelectedRow[row.id]
+                    ? "selected-row-highlight"
                     : ""
                 }`}
               >

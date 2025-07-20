@@ -16,11 +16,17 @@
         color: #afb9bf;
       }
 
-      .section-header__arrowBtn {
+      .section-header__arrowDownBtn,
+      .section-header__arrowUpBtn {
         margin: 0 3px -3px 0;
       }
 
+      .section-header__arrowUpBtn {
+        display: none;
+      }
+
       .subtitle__links-container {
+        display: none;
         position: fixed;
         top: 115px;
         left: 0;
@@ -53,10 +59,10 @@
           .links__item {
             display: flex;
             align-items: center;
+            gap: 10px;
             padding: 15px;
 
             .web-icon {
-              margin-left: 10px;
               width: 30px;
               height: 30px;
             }
@@ -70,6 +76,21 @@
             border-bottom: 0.5px solid rgb(235, 219, 219);
           }
         }
+      }
+    }
+
+    .section-header__subtitle:focus {
+      .section-header__subtitle-text {
+        font-weight: 700;
+      }
+      .section-header__arrowDownBtn {
+        display: none;
+      }
+      .section-header__arrowUpBtn {
+        display: inline-block;
+      }
+      .subtitle__links-container {
+        display: block;
       }
     }
   }

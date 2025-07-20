@@ -1,14 +1,13 @@
 import CardRenderer from "./cards/CardRenderer";
 import { SectionModel } from "../../models/section.model";
 import { GoTriangleDown, GoTriangleUp } from "react-icons/go";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import webIcon from "../../assets/images/web-icon.png";
 import { Card } from "../../models/card.model";
 import TableComponent from "./Table";
 import { languageContext } from "../../contexts/LanguageContext";
 
 const Section = ({ sectionData }: { sectionData: SectionModel }) => {
-  const [showSectionLinks, setShowSectionLinks] = useState(false);
   const { language } = useContext(languageContext);
   const englishMode: boolean = language === "english";
 
@@ -41,53 +40,40 @@ const Section = ({ sectionData }: { sectionData: SectionModel }) => {
         </h1>
 
         {sectionData.relatedLinks.length > 0 && (
-          <div
-            className="section-header__subtitle"
-            onClick={() => {
-              setShowSectionLinks(!showSectionLinks);
-            }}
-          >
+          <div className="section-header__subtitle" tabIndex={0}>
             <span className="section-header__seperator">|</span>
-            <span
-              className={`section-header__subtitle-text ${
-                showSectionLinks ? "bold" : ""
-              }`}
-            >
+            <span className="section-header__subtitle-text">
               {!englishMode ? "לינקים בנושא" : "subject links"}
             </span>
 
-            {showSectionLinks ? (
-              <GoTriangleUp className="section-header__arrowBtn" />
-            ) : (
-              <GoTriangleDown className="section-header__arrowBtn" />
-            )}
-            {showSectionLinks && (
-              <div className="subtitle__links-container">
-                <div className="subtitle__links">
-                  <div className="subtitle__links_line-symbol"></div>
+            <GoTriangleUp className="section-header__arrowUpBtn" />
+            <GoTriangleDown className="section-header__arrowDownBtn" />
 
-                  {sectionData.relatedLinks.map((link) => (
-                    <div
-                      className={`links__item ${link.id === 1 && "first-link"}`}
-                    >
-                      <img className="web-icon" src={webIcon} alt="" />
+            <div className="subtitle__links-container">
+              <div className="subtitle__links">
+                <div className="subtitle__links_line-symbol"></div>
 
-                      <div className="links__item_content">
-                        <div className="links__item_title bold font-sm">
-                          {englishMode ? link.titleEnglish : link.title}
-                        </div>
-                        <div className="links__item_subtitle font-xs">
-                          {englishMode ? link.subTitleEnglish : link.subTitle}
-                        </div>
-                        <a href={link.url} className="links__item_url font-xs">
-                          {link.shortenUrl}
-                        </a>
+                {sectionData.relatedLinks.map((link) => (
+                  <div
+                    className={`links__item ${link.id === 1 && "first-link"}`}
+                  >
+                    <img className="web-icon" src={webIcon} alt="" />
+
+                    <div className="links__item_content">
+                      <div className="links__item_title bold font-sm">
+                        {englishMode ? link.titleEnglish : link.title}
                       </div>
+                      <div className="links__item_subtitle font-xs">
+                        {englishMode ? link.subTitleEnglish : link.subTitle}
+                      </div>
+                      <a href={link.url} className="links__item_url font-xs">
+                        {link.shortenUrl}
+                      </a>
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
               </div>
-            )}
+            </div>
           </div>
         )}
       </div>
@@ -104,7 +90,10 @@ const Section = ({ sectionData }: { sectionData: SectionModel }) => {
 
       <div className="cards-margin">
         {sectionData.tables.map((table) => (
-          <TableComponent table={table} rowActionsModalVisible={false}></TableComponent>
+          <TableComponent
+            table={table}
+            rowActionsModalVisible={false}
+          ></TableComponent>
         ))}
       </div>
     </div>

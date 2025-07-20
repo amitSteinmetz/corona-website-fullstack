@@ -29,8 +29,18 @@ $cardBackgroundColor: white;
   --admin-login-form-text-color: #4b6170;
 }
 
-// header - background color  #4B6170
+// language (direction)
 
-// nav links background color: #374f60
+.hebrew {
+  --direction: rtl;
+  --header-padding: 14px 10px 7px 29px;
+  --header-logo-border-right: 0;
+  --header-logo-border-left: 0.5px solid #ebe8e8;
+}
 
-// header text color - #233333
+.english {
+  --direction: ltr;
+  --header-padding: 14px 29px 7px 10px;
+  --header-logo-border-right: 0.5px solid #ebe8e8;
+  --header-logo-border-left: 0;
+}
